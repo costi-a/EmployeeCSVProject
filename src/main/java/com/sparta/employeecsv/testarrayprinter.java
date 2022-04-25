@@ -1,10 +1,10 @@
-package com.sparta.testemployeecsv;
+package com.sparta.employeecsv;
 
 import com.sparta.employeecsv.model.EmployeeFileReader;
 
 import java.io.FileNotFoundException;
 
-public class testClass {
+public class testarrayprinter {
 
     public static void main(String... args)  {
         try {
@@ -13,5 +13,4 @@ public class testClass {
             throw new RuntimeException(e);
         }
     }
-
 }

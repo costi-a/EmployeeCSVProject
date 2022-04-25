@@ -4,15 +4,16 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collection;
 
 public class EmployeeFileReader {
 
-    private ArrayList<Employee> employeesList;
+    private static ArrayList<Employee> employeesList;
     //private ArrayList<Employee> duplicatesList;
     
-    public void readFile(String file) throws FileNotFoundException {
+    public static void readFile(String file) throws FileNotFoundException {
         
         employeesList = new ArrayList<>();
         //duplicatesList = new ArrayList<>();
@@ -28,12 +29,18 @@ public class EmployeeFileReader {
 
             while ((line = br.readLine()) != null)   {
                 String[] values = line.split(",");
-                employee
+                Employee employee = employeeParser.parseEmployee(values[0],values[1],
+                        values[2], values[3], values[4], values[5],
+                        values[6], values[7], values[8], values[9]);
+
+                employeesList.add(employee);
 
             }
-        }catch (IOException e)  {
-            e.printStackTrace();
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
-        
+
     }
 }

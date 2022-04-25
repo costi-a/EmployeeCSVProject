@@ -1,13 +1,15 @@
 package com.sparta.employeecsv.model;
 
-import java.sql.Date;
+import java.util.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 
 public class EmployeeRegexParser {
 
     public Employee parseEmployee(String employeeID, String namePrefix, String firstName,
                                   String middleInitial, String lastName, String gender,
                                   String emailAddress, String dateOfBirth, String dateOfJoining,
-                                  String salary) {
+                                  String salary) throws ParseException {
 
         Employee employee;
 
@@ -55,25 +57,36 @@ public class EmployeeRegexParser {
         }
         return null;
     }
-    private Date parseDate(String date) {
-        if (date == null)   {
+    private Date parseDate(String date) throws ParseException {
+        if (date == null) {
             return null;
         }
 
         String[] dateSplit = date.split("/");
 
-        if (dateSplit.length != 3)  {
+        if (dateSplit.length != 3) {
             return null;
         }
 
-        StringBuilder newDate = new StringBuilder();
+        StringBuilder sb = new StringBuilder();
 
-        newDate.append(dateSplit[1]).append("-")
-                .append(dateSplit[0]).append("-")
-                .append(dateSplit[2]);
+        sb.append(dateSplit[0]).append("/").append(dateSplit[1]).append("/").append(dateSplit[2]);
 
-        return Date.valueOf(newDate.toString());
+        String dateString = sb.toString();
 
+
+        SimpleDateFormat df = new SimpleDateFormat("dd/mm/yyyy");
+        Date newDate = null;
+        try {
+            newDate = df.parse(dateString);
+        } catch (ParseException e)  {
+            e.printStackTrace();
+        }
+
+        System.out.println(newDate);
+        java.sql.Date sqlDate = new java.sql.Date(newDate.getTime());
+        System.out.println(sqlDate);
+        return newDate;
     }
 
     private Float parseSalary(String salary) {
