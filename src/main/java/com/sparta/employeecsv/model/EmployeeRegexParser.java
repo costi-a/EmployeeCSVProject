@@ -21,13 +21,13 @@ public class EmployeeRegexParser {
         return employee;
     }
     private Integer parseEmployeeID(String employeeID) {
-        if ("\\d{1,9}".matches(employeeID)) {
+        if (employeeID.matches("\\d{1,9}")) {
             return Integer.valueOf(employeeID);
         }
         return null;
     }
     private String parseNamePrefix(String namePrefix) {
-        if ("A-Za-z{2,6}".matches(namePrefix)) {
+        if (namePrefix.matches("A-Za-z{2,6}")) {
             return namePrefix;
         }
         return null;
@@ -46,13 +46,13 @@ public class EmployeeRegexParser {
         return middleInitial.charAt(0);
     }
     private Character parseGender(String gender) {
-        if ("M|F".matches(gender))  {
+        if (gender.matches("M|F"))  {
             return gender.charAt(0);
         }
         return null;
     }
     private String parseEmail(String emailAddress) {
-        if (("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\\\.[A-Z]{2,6}$").matches(emailAddress)) {
+        if (emailAddress.matches("^[A-Z\\d._%+-]+@[A-Z\\d.-]+\\\\.[A-Z]{2,6}$")) {
             return emailAddress;
         }
         return null;
@@ -83,10 +83,10 @@ public class EmployeeRegexParser {
             e.printStackTrace();
         }
 
-        System.out.println(newDate);
+
         java.sql.Date sqlDate = new java.sql.Date(newDate.getTime());
-        System.out.println(sqlDate);
-        return newDate;
+
+        return sqlDate;
     }
 
     private Float parseSalary(String salary) {

@@ -116,15 +116,15 @@ public class Employee {
     }
 
     public String toString()    {
-        return "[ Employee ID: " + employeeID +
-                ", Name Prefix: " + namePrefix +
-                ", First Name: " + firstName +
-                ", Last Name: " + lastName +
-                ", Gender: " + gender +
-                ", Email: " + emailAddress +
-                ", D.O.B: " + dateOfBirth +
-                ", D.O.J: " + dateOfJoining +
-                ", Salary: £" + salary + " ]\n";
+        return " Employee ID [ " +
+                ", Name Prefix: " + getNamePrefix() +
+                ", First Name: " + getFirstName() +
+                ", Last Name: " + getLastName() +
+                ", Gender: " + getGender() +
+                ", Email: " + getEmailAddress() +
+                ", D.O.B: " + getDateOfBirth() +
+                ", D.O.J: " + getDateOfJoining() +
+                ", Salary: £" + getSalary() + " ]\n";
 
     }
 }
