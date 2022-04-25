@@ -9,15 +9,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class EmployeeFileReader {
-
     public static HashMap<String, Employee> employeesList;
     private static ArrayList<Employee> duplicatesList;
     
     public static void readFile(String file) throws FileNotFoundException {
-        
         employeesList = new HashMap<>();
         duplicatesList = new ArrayList<>();
-
         EmployeeValidator employeeParser = new EmployeeValidator();
 
         try {
@@ -39,13 +36,11 @@ public class EmployeeFileReader {
                     employeesList.remove(values[0]);
                 }
                 employeesList.put(values[0], employee);
-
             }
         } catch (ParseException e) {
             throw new RuntimeException(e);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
     }
 }
