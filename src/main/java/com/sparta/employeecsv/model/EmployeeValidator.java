@@ -4,20 +4,17 @@ import java.util.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
-public class EmployeeRegexParser {
-
+public class EmployeeValidator {
     public Employee parseEmployee(String employeeID, String namePrefix, String firstName,
                                   String middleInitial, String lastName, String gender,
                                   String emailAddress, String dateOfBirth, String dateOfJoining,
                                   String salary) throws ParseException {
-
         Employee employee;
 
         employee = new Employee(parseEmployeeID(employeeID), parseNamePrefix(namePrefix), parseName(firstName),
                 parseMidInitial(middleInitial), parseName(lastName), parseGender(gender), parseEmail(emailAddress),
                 parseDate(dateOfBirth), parseDate(dateOfJoining), parseSalary(salary)
                 );
-
         return employee;
     }
     private Integer parseEmployeeID(String employeeID) {
@@ -99,6 +96,4 @@ public class EmployeeRegexParser {
         }
         return null;
     }
-
-
 }

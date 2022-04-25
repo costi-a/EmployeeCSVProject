@@ -6,7 +6,6 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 
 public class EmployeeFileReader {
@@ -19,7 +18,7 @@ public class EmployeeFileReader {
         employeesList = new HashMap<>();
         duplicatesList = new ArrayList<>();
 
-        EmployeeRegexParser employeeParser = new EmployeeRegexParser();
+        EmployeeValidator employeeParser = new EmployeeValidator();
 
         try {
             employeesList = new HashMap<String, Employee>();
