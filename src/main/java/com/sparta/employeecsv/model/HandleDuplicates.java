@@ -34,8 +34,6 @@ public class HandleDuplicates {
         for(int i = 0; i < duplicatesNumbers.size(); i++) {
             sum += duplicatesNumbers.get(i);
         }
-        System.out.println("duplicates nums" + duplicatesNumbers);
-        System.out.println("sum " + sum);
         return sum;
     }
 
@@ -48,7 +46,6 @@ public class HandleDuplicates {
                 duplicatesIds.add(id);
             }
         }
-        System.out.println("duplicates id " + duplicatesIds);
         return duplicatesIds;
     }
 }

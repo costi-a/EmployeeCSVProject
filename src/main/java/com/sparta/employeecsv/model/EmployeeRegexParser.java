@@ -27,7 +27,10 @@ public class EmployeeRegexParser {
         return null;
     }
     private String parseNamePrefix(String namePrefix) {
-        if (namePrefix.matches("A-Za-z{2,6}")) {
+        boolean rightPrefix = namePrefix.equals("Mrs.") || namePrefix.equals("Mr.") ||
+                namePrefix.equals("Ms.") || namePrefix.equals("Dr.") || namePrefix.equals("Hon.") ||
+                namePrefix.equals("Drs.");
+        if (rightPrefix) {
             return namePrefix;
         }
         return null;
@@ -37,7 +40,6 @@ public class EmployeeRegexParser {
             return null;
         }
         return name;
-
     }
     private Character parseMidInitial(String middleInitial) {
         if (middleInitial.length() != 1 || middleInitial == null)   {
@@ -52,7 +54,9 @@ public class EmployeeRegexParser {
         return null;
     }
     private String parseEmail(String emailAddress) {
-        if (emailAddress.matches("^[A-Z\\d._%+-]+@[A-Z\\d.-]+\\\\.[A-Z]{2,6}$")) {
+        String regex = "^([a-zA-Z0-9_\\-\\.]+)@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\." +
+                "[0-9]{1,3}\\.)|(([a-zA-Z0-9\\-]+\\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\\]?)$";
+        if (emailAddress.matches(regex)) {
             return emailAddress;
         }
         return null;
@@ -90,7 +94,7 @@ public class EmployeeRegexParser {
     }
 
     private Float parseSalary(String salary) {
-        if (("\\d{1,9}").matches(salary))   {
+        if ((salary).matches("(?!0+(?:\\\\.0+)?$)[0-9]+(?:\\\\.[0-9]+)?"))   {
             return Float.valueOf(salary);
         }
         return null;
