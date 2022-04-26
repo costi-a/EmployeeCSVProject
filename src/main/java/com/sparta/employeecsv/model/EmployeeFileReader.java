@@ -6,19 +6,14 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.List;
 
 public class EmployeeFileReader {
-    public static HashMap<String, Employee> employeesList;
-    private static ArrayList<Employee> duplicatesList;
-    
-    public static void readFile(String file) throws FileNotFoundException {
-        employeesList = new HashMap<>();
-        duplicatesList = new ArrayList<>();
-        EmployeeValidator employeeParser = new EmployeeValidator();
-
+    public void readFile(String file) throws FileNotFoundException {
         try {
-            employeesList = new HashMap<String, Employee>();
+            List<Employee> employeesList = new ArrayList<>();
+            EmployeeValidator employeeParser = new EmployeeValidator();
+
             FileReader fr = new FileReader(file);
             BufferedReader br = new BufferedReader(fr);
 
@@ -31,12 +26,9 @@ public class EmployeeFileReader {
                         values[2], values[3], values[4], values[5],
                         values[6], values[7], values[8], values[9]);
                 
-                if(employeesList.containsKey(values[0]))   {
-                    duplicatesList.add(employee);
-                    employeesList.remove(values[0]);
-                }
-                employeesList.put(values[0], employee);
+                employeesList.add(employee);
             }
+            System.out.println("employee " + employeesList);
         } catch (ParseException e) {
             throw new RuntimeException(e);
         } catch (IOException e) {
