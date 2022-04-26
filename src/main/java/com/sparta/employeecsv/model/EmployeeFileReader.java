@@ -5,13 +5,13 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.text.ParseException;
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 public class EmployeeFileReader {
     public void readFile(String file) throws FileNotFoundException {
         try {
-            List<Employee> employeesList = new ArrayList<>();
+            List<Employee> employeesList = new LinkedList<>();
             EmployeeValidator employeeParser = new EmployeeValidator();
 
             FileReader fr = new FileReader(file);
@@ -22,7 +22,8 @@ public class EmployeeFileReader {
 
             while ((line = br.readLine()) != null)   {
                 String[] values = line.split(",");
-                Employee employee = employeeParser.parseEmployee(values[0],values[1],
+                System.out.println("id " + values[0]);
+                Employee employee = employeeParser.parseEmployee(values[0], values[1],
                         values[2], values[3], values[4], values[5],
                         values[6], values[7], values[8], values[9]);
                 

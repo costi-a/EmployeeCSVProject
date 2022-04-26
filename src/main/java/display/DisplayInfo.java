@@ -5,6 +5,6 @@ public class DisplayInfo {
     // how many unique, clean records there are, how many duplicates,
     // how many records with missing fields, possibly display the questionable records
     public void printResults() {
-        System.out.println("aa");
+        // System.out.println("aa");
     }
 }
