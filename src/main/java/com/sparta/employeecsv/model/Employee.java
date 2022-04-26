@@ -91,7 +91,7 @@ public class Employee {
         this.emailAddress = emailAddress;
     }
 
-    public Date getDateOfBirth() {
+    public java.sql.Date getDateOfBirth() {
         return dateOfBirth;
     }
 
@@ -99,7 +99,7 @@ public class Employee {
         this.dateOfBirth = dateOfBirth;
     }
 
-    public Date getDateOfJoining() {
+    public java.sql.Date getDateOfJoining() {
         return dateOfJoining;
     }
 
