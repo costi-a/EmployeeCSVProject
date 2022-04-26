@@ -18,7 +18,7 @@ public class DatabaseDriver {
         try {
             //create the employee list table in the database
             String createTable = "Create Table EMPLOYEE-RECORDS " +
-                    "EmployeeID INT," +
+                    "EmployeeID VARCHAR(6)," +
                     "NamePrefix VARCHAR(6)," +
                     "FirstName VARCHAR(25)," +
                     "MiddleInitial CHAR(1)," +
@@ -50,7 +50,7 @@ public class DatabaseDriver {
             PreparedStatement ps = connection.prepareStatement(dbInsert);
 
             for (Employee employee : employeeList)  {
-                ps.setInt(1, employee.getEmployeeID());
+                ps.setString(1, employee.getEmployeeID());
                 ps.setString(2, employee.getNamePrefix());
                 ps.setString(3, employee.getFirstName());
                 ps.setString(4, employee.getMiddleInitial().toString());
