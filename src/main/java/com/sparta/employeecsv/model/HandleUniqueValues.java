@@ -1,6 +1,5 @@
 package com.sparta.employeecsv.model;
 
-import java.util.HashMap;
 import java.util.Map;
 
 public class HandleUniqueValues {
@@ -13,7 +12,6 @@ public class HandleUniqueValues {
             for(String id: mapIds.keySet()) {
                 if(mapIds.get(id) == 1) {
                     counter++;
-                    System.out.println("idd " + mapIds.get(id));
                 }
             }
         } catch (Exception e) {

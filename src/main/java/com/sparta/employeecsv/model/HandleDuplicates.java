@@ -5,7 +5,7 @@ import java.util.LinkedList;
 import java.util.Map;
 
 public class HandleDuplicates {
-    public Map<String, Integer> returnHashMapDuplicates(LinkedList<String> ids) {
+    public Map<String, Integer> returnHashMapIds(LinkedList<String> ids) {
         // setting an hasmap so that we can count the the ids
         Map<String, Integer> mapIds = new HashMap<>();
         // if id doesn't exists we put into the hashmap the id as a key and the value 1
