@@ -3,11 +3,9 @@ package com.sparta.employeecsv.database;
 import com.sparta.employeecsv.model.Employee;
 
 import java.sql.*;
-import java.util.Iterator;
 import java.util.List;
 
 public class DatabaseDriver {
-
     private Connection connection;
 
     public DatabaseDriver() throws SQLException {
@@ -65,10 +63,8 @@ public class DatabaseDriver {
             }
 
             ps.close();
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
     }
 }

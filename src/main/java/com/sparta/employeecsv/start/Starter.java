@@ -1,4 +1,4 @@
-package start;
+package com.sparta.employeecsv.start;
 import com.sparta.employeecsv.model.Manager;
 
 public class Starter {
