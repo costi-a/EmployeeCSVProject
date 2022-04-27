@@ -9,13 +9,10 @@ import java.sql.SQLException;
 import java.util.Properties;
 
 public class ConnectionFactory {
-
     private static Connection connection = null;
 
-    public static Connection getConnection()    {
-
+    public static Connection getConnection() {
         if (connection == null) {
-
             try {
                 Properties dbProps = new Properties();
                 //load the sql database properties
@@ -33,9 +30,7 @@ public class ConnectionFactory {
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-
         }
-
         return connection;
     }
 
@@ -44,11 +39,10 @@ public class ConnectionFactory {
             try {
                 //close the connection to the database
                 connection.close();
-            }catch (SQLException e) {
+            } catch (SQLException e) {
                 e.printStackTrace();
             }
         }
         connection = null;
     }
-
 }
