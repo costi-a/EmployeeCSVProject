@@ -45,7 +45,7 @@ public class DatabaseDriver {
     }
 
     public void populateTable(List<Employee> employeeList) {
-
+        //for each employee in the list get their details and add it to the database
         try {
             PreparedStatement ps = connection.prepareStatement(getInsertSQL());
 
@@ -73,6 +73,7 @@ public class DatabaseDriver {
     }
 
     public void clearTable()    {
+        //drop the table from the database
 
         String drop = "DROP TABLE [IF EXISTS] EMPLOYEE-RECORDS";
         try {
@@ -86,6 +87,7 @@ public class DatabaseDriver {
     }
 
     public static String getInsertSQL() {
+        //get the sql insert property from the properties file
         Properties sqlProps = new Properties();
         try {
             sqlProps.load(new FileReader("sql.properties"));
