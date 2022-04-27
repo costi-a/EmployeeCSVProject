@@ -1,5 +1,4 @@
-[16:49] Alex Costi
-        package com.sparta.employeecsv.database;
+package com.sparta.employeecsv.database;
 import com.sparta.employeecsv.model.Employee;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
