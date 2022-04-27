@@ -5,7 +5,7 @@
 *.log
 
 # env file
-*.sql
+*sql.properties
 
 # BlueJ files
 *.ctxt
