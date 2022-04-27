@@ -1,4 +1,5 @@
-package com.sparta.employeecsv.database;
+[16:49] Alex Costi
+        package com.sparta.employeecsv.database;
 import com.sparta.employeecsv.model.Employee;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -19,7 +20,7 @@ public class DatabaseDriver {
     public void createTable() {
         try {
             //create the employee list table in the database
-            String createTable = "Create Table EMPLOYEE_RECORDS " +
+            String createTable = "CREATE TABLE EMPLOYEE_RECORDS (" +
                     "EmployeeID VARCHAR(6)," +
                     "NamePrefix VARCHAR(6)," +
                     "FirstName VARCHAR(25)," +
@@ -36,7 +37,7 @@ public class DatabaseDriver {
             st.executeUpdate(createTable);
             st.close();
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
     }
 
