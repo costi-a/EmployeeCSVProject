@@ -1,7 +1,5 @@
 package com.sparta.employeecsv.database;
-
 import com.sparta.employeecsv.model.Employee;
-
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
@@ -9,20 +7,19 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.List;
+import java.util.LinkedList;
 import java.util.Properties;
-
 public class DatabaseDriver {
-    private Connection connection;
-
+    private static Connection connection;
     public DatabaseDriver() throws SQLException {
         connection = ConnectionFactory.getConnection();
+        System.out.println("Connected");
     }
 
     public void createTable() {
         try {
             //create the employee list table in the database
-            String createTable = "Create Table EMPLOYEE-RECORDS " +
+            String createTable = "CREATE TABLE EMPLOYEE_RECORDS (" +
                     "EmployeeID VARCHAR(6)," +
                     "NamePrefix VARCHAR(6)," +
                     "FirstName VARCHAR(25)," +
@@ -35,20 +32,18 @@ public class DatabaseDriver {
                     "Salary DECIMAL(10,2)," +
                     "PRIMARY KEY (EmployeeID)" +
                     ");";
-
             Statement st = connection.createStatement();
             st.executeUpdate(createTable);
             st.close();
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
     }
 
-    public void populateTable(List<Employee> employeeList) {
+    public void populateTable(LinkedList<Employee> employeeList) {
         //for each employee in the list get their details and add it to the database
         try {
             PreparedStatement ps = connection.prepareStatement(getInsertSQL());
-
             for (Employee employee : employeeList) {
                 ps.setString(1, employee.getEmployeeID());
                 ps.setString(2, employee.getNamePrefix());
@@ -60,7 +55,6 @@ public class DatabaseDriver {
                 ps.setDate(8, employee.getDateOfBirth());
                 ps.setDate(9, employee.getDateOfJoining());
                 ps.setFloat(10, employee.getSalary());
-
                 ps.executeUpdate();
             }
 
@@ -72,7 +66,7 @@ public class DatabaseDriver {
 
     public void clearTable()    {
         //drop the table from the database
-        String drop = "DROP TABLE [IF EXISTS] EMPLOYEE-RECORDS";
+        String drop = "DROP TABLE IF EXISTS EMPLOYEE_RECORDS";
         try {
             Statement st = connection.createStatement();
             st.executeUpdate(drop);
@@ -81,8 +75,6 @@ public class DatabaseDriver {
             e.printStackTrace();
         }
     }
-
-    
 
     private String getInsertSQL() {
         //get the sql insert property from the properties file
