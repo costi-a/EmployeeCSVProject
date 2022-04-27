@@ -70,7 +70,8 @@ public class DatabaseDriver {
         try {
             Statement st = connection.createStatement();
             st.executeUpdate(drop);
-            st.close();
+
+            //comment
         } catch (SQLException e) {
             e.printStackTrace();
         }
