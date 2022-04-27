@@ -3,12 +3,11 @@ package com.sparta.employeecsv.model;
 import com.sparta.employeecsv.display.DisplayInfo;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.util.LinkedList;
 import java.util.Map;
 
 public class Manager {
-    public void manageProgram() throws IOException {
+    public void manageProgram() {
         try {
             // reading the file
             EmployeeFileReader rf = new EmployeeFileReader();
@@ -38,6 +37,10 @@ public class Manager {
             // displaying the info
             DisplayInfo dInfo = new DisplayInfo();
             dInfo.printResults(duplicateIds, uniqueIds, employeesList);
+
+            // writing into SQL db
+
+
         } catch (Exception e) {
             e.printStackTrace();
         }
