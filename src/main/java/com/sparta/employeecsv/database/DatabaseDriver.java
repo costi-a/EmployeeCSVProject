@@ -11,6 +11,7 @@ import java.util.LinkedList;
 import java.util.Properties;
 public class DatabaseDriver {
     private static Connection connection;
+
     public DatabaseDriver() throws SQLException {
         connection = ConnectionFactory.getConnection();
     }
@@ -33,7 +34,7 @@ public class DatabaseDriver {
                     ");";
             Statement st = connection.createStatement();
             st.executeUpdate(createTable);
-            ConnectionFactory.closeConnection();
+            // ConnectionFactory.closeConnection();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -56,7 +57,8 @@ public class DatabaseDriver {
                 ps.setFloat(10, employee.getSalary());
                 ps.executeUpdate();
             }
-            ConnectionFactory.closeConnection();
+            System.out.println("EMPLOYEE_RECORDS updated correctly");
+            // ConnectionFactory.closeConnection();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -68,7 +70,7 @@ public class DatabaseDriver {
         try {
             Statement st = connection.createStatement();
             st.executeUpdate(drop);
-            ConnectionFactory.closeConnection();
+            // ConnectionFactory.closeConnection();
         } catch (SQLException e) {
             e.printStackTrace();
         }
