@@ -72,7 +72,6 @@ public class DatabaseDriver {
 
     public void clearTable()    {
         //drop the table from the database
-
         String drop = "DROP TABLE [IF EXISTS] EMPLOYEE-RECORDS";
         try {
             Statement st = connection.createStatement();
