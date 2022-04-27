@@ -9,7 +9,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.List;
+import java.util.LinkedList;
 import java.util.Properties;
 
 public class DatabaseDriver {
@@ -21,6 +21,8 @@ public class DatabaseDriver {
 
     public void createTable() {
         try {
+            // clearing table
+            this.clearTable();
             //create the employee list table in the database
             String createTable = "Create Table EMPLOYEE-RECORDS " +
                     "EmployeeID VARCHAR(6)," +
@@ -44,7 +46,7 @@ public class DatabaseDriver {
         }
     }
 
-    public void populateTable(List<Employee> employeeList) {
+    public void populateTable(LinkedList<Employee> employeeList) {
         //for each employee in the list get their details and add it to the database
         try {
             PreparedStatement ps = connection.prepareStatement(getInsertSQL());
