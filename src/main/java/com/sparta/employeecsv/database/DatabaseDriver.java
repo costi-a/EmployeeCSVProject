@@ -2,15 +2,20 @@ package com.sparta.employeecsv.database;
 
 import com.sparta.employeecsv.model.Employee;
 
-import java.sql.*;
-import java.util.Iterator;
+import java.io.FileReader;
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.List;
+import java.util.Properties;
 
 public class DatabaseDriver {
 
     private Connection connection;
 
-    public DatabaseDriver() throws SQLException {
+    public DatabaseDriver() {
         connection = ConnectionFactory.getConnection();
     }
 
@@ -18,7 +23,7 @@ public class DatabaseDriver {
         try {
             //create the employee list table in the database
             String createTable = "Create Table EMPLOYEE-RECORDS " +
-                    "EmployeeID INT," +
+                    "EmployeeID VARCHAR(6)," +
                     "NamePrefix VARCHAR(6)," +
                     "FirstName VARCHAR(25)," +
                     "MiddleInitial CHAR(1)," +
@@ -41,10 +46,15 @@ public class DatabaseDriver {
 
     public void populateTable(List<Employee> employeeList) {
 
-        String dbInsert = "INSERT INTO EMPLOYEE-RECORDS " +
-                "(EmployeeID, NamePrefix, FirstName, MiddleInitial, LastName, " +
-                "Gender, Email, DateOfBirth, DateOfJoining, Salary)" +
-                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        Properties sqlProps = new Properties();
+        String dbInsert;
+        try {
+            sqlProps.load(new FileReader("sql.properties"));
+            dbInsert = sqlProps.getProperty("db.sql-insert");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
 
         try {
             PreparedStatement ps = connection.prepareStatement(dbInsert);
@@ -66,6 +76,19 @@ public class DatabaseDriver {
 
             ps.close();
 
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public void clearTable()    {
+
+        String drop = "DROP TABLE [IF EXISTS] EMPLOYEE-RECORDS";
+        try {
+            Statement st = connection.createStatement();
+            st.executeUpdate(drop);
+            st.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }

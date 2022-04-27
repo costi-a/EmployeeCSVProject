@@ -1,6 +1,6 @@
 package com.sparta.employeecsv.model;
 
-import java.util.Date;
+import java.sql.Date;
 
 public class Employee {
     private Integer employeeID;
@@ -91,7 +91,7 @@ public class Employee {
         this.emailAddress = emailAddress;
     }
 
-    public java.sql.Date getDateOfBirth() {
+    public Date getDateOfBirth() {
         return dateOfBirth;
     }
 
@@ -99,7 +99,7 @@ public class Employee {
         this.dateOfBirth = dateOfBirth;
     }
 
-    public java.sql.Date getDateOfJoining() {
+    public Date getDateOfJoining() {
         return dateOfJoining;
     }
 
