@@ -1,6 +1,6 @@
 package com.sparta.employeecsv.model;
 
-import display.DisplayInfo;
+import com.sparta.employeecsv.display.DisplayInfo;
 
 import java.io.BufferedReader;
 import java.io.IOException;

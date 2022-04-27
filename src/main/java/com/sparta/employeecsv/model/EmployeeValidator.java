@@ -1,6 +1,7 @@
 package com.sparta.employeecsv.model;
 
-import java.util.Date;
+
+import java.sql.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
@@ -72,23 +73,18 @@ public class EmployeeValidator {
         }
 
         StringBuilder sb = new StringBuilder();
-
         sb.append(dateSplit[0]).append("/").append(dateSplit[1]).append("/").append(dateSplit[2]);
-
         String dateString = sb.toString();
 
-
         SimpleDateFormat df = new SimpleDateFormat("dd/mm/yyyy");
-        Date newDate = null;
+        java.util.Date newDate = null;
         try {
             newDate = df.parse(dateString);
         } catch (ParseException e)  {
             e.printStackTrace();
         }
 
-
-        java.sql.Date sqlDate = new java.sql.Date(newDate.getTime());
-
+        Date sqlDate = new Date(newDate.getTime());
         return sqlDate;
     }
 

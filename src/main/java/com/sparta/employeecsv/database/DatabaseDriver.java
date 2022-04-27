@@ -2,20 +2,13 @@ package com.sparta.employeecsv.database;
 
 import com.sparta.employeecsv.model.Employee;
 
-import java.io.FileReader;
-import java.io.IOException;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.List;
-import java.util.Properties;
 
 public class DatabaseDriver {
-
     private Connection connection;
 
-    public DatabaseDriver() {
+    public DatabaseDriver() throws SQLException {
         connection = ConnectionFactory.getConnection();
     }
 
@@ -45,9 +38,14 @@ public class DatabaseDriver {
     }
 
     public void populateTable(List<Employee> employeeList) {
-        //for each employee in the list get their details and add it to the database
+
+        String dbInsert = "INSERT INTO EMPLOYEE-RECORDS " +
+                "(EmployeeID, NamePrefix, FirstName, MiddleInitial, LastName, " +
+                "Gender, Email, DateOfBirth, DateOfJoining, Salary)" +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
         try {
-            PreparedStatement ps = connection.prepareStatement(getInsertSQL());
+            PreparedStatement ps = connection.prepareStatement(dbInsert);
 
             for (Employee employee : employeeList)  {
                 ps.setString(1, employee.getEmployeeID());
@@ -65,36 +63,8 @@ public class DatabaseDriver {
             }
 
             ps.close();
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
-    }
-
-    public void clearTable()    {
-        //drop the table from the database
-
-        String drop = "DROP TABLE [IF EXISTS] EMPLOYEE-RECORDS";
-        try {
-            Statement st = connection.createStatement();
-            st.executeUpdate(drop);
-            st.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-    }
-
-    public static String getInsertSQL() {
-        //get the sql insert property from the properties file
-        Properties sqlProps = new Properties();
-        try {
-            sqlProps.load(new FileReader("sql.properties"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return sqlProps.getProperty("db.sql-insert");
-
     }
 }
