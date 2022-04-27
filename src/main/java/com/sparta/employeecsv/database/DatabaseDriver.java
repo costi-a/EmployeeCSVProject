@@ -46,18 +46,8 @@ public class DatabaseDriver {
 
     public void populateTable(List<Employee> employeeList) {
 
-        Properties sqlProps = new Properties();
-        String dbInsert;
         try {
-            sqlProps.load(new FileReader("sql.properties"));
-            dbInsert = sqlProps.getProperty("db.sql-insert");
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
-
-        try {
-            PreparedStatement ps = connection.prepareStatement(dbInsert);
+            PreparedStatement ps = connection.prepareStatement(getInsertSQL());
 
             for (Employee employee : employeeList)  {
                 ps.setInt(1, employee.getEmployeeID());
@@ -92,6 +82,17 @@ public class DatabaseDriver {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
+    }
+
+    public static String getInsertSQL() {
+        Properties sqlProps = new Properties();
+        try {
+            sqlProps.load(new FileReader("sql.properties"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return sqlProps.getProperty("db.sql-insert");
 
     }
 }
