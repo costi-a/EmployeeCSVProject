@@ -31,7 +31,7 @@ public class Employee {
         this.salary         = salary;
     }
 
-    public Employee()   {
+    public Employee(String employeeID, String namePrefix, String firstName, Character middleInitial, String lastName, Character gender, String emailAddress, java.util.Date date, java.util.Date parseDate, Float salary)   {
         super();
     }
 
@@ -99,7 +99,7 @@ public class Employee {
         this.dateOfBirth = dateOfBirth;
     }
 
-    public java.sql.Date getDateOfJoining() {
+    public Date getDateOfJoining() {
         return dateOfJoining;
     }
 
