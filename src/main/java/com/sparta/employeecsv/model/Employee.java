@@ -35,6 +35,8 @@ public class Employee {
         super();
     }
 
+    public Employee() {}
+
     public String getEmployeeID() {
         return employeeID;
     }

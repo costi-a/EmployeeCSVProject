@@ -34,7 +34,6 @@ public class DatabaseDriver {
                     ");";
             Statement st = connection.createStatement();
             st.executeUpdate(createTable);
-            // ConnectionFactory.closeConnection();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -42,8 +41,7 @@ public class DatabaseDriver {
 
     public void populateTable(LinkedList<Employee> employeeList) {
         //for each employee in the list get their details and add it to the database
-        try {
-            PreparedStatement ps = connection.prepareStatement(getInsertSQL());
+        try (PreparedStatement ps = connection.prepareStatement(getInsertSQL())) {
             for (Employee employee : employeeList) {
                 ps.setString(1, employee.getEmployeeID());
                 ps.setString(2, employee.getNamePrefix());
@@ -58,7 +56,6 @@ public class DatabaseDriver {
                 ps.executeUpdate();
             }
             System.out.println("EMPLOYEE_RECORDS updated correctly");
-            // ConnectionFactory.closeConnection();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -70,7 +67,6 @@ public class DatabaseDriver {
         try {
             Statement st = connection.createStatement();
             st.executeUpdate(drop);
-            // ConnectionFactory.closeConnection();
         } catch (SQLException e) {
             e.printStackTrace();
         }
