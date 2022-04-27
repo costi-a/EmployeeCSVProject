@@ -3,7 +3,7 @@ package com.sparta.employeecsv.model;
 import java.sql.Date;
 
 public class Employee {
-    private Integer employeeID;
+    private String employeeID;
     private String namePrefix;
     private String firstName;
     private Character middleInitial;
@@ -14,7 +14,7 @@ public class Employee {
     private Date dateOfJoining;
     private Float salary;
 
-    public Employee (Integer employeeID, String namePrefix, String firstName,
+    public Employee (String employeeID, String namePrefix, String firstName,
                      Character middleInitial, String lastName, Character gender,
                      String emailAddress, Date dateOfBirth, Date dateOfJoining,
                      Float salary)  {
@@ -31,15 +31,15 @@ public class Employee {
         this.salary         = salary;
     }
 
-    public Employee()   {
+    public Employee(String employeeID, String namePrefix, String firstName, Character middleInitial, String lastName, Character gender, String emailAddress, java.util.Date date, java.util.Date parseDate, Float salary)   {
         super();
     }
 
-    public Integer getEmployeeID() {
+    public String getEmployeeID() {
         return employeeID;
     }
 
-    public void setEmployeeID(Integer employeeID) {
+    public void setEmployeeID(String employeeID) {
         this.employeeID = employeeID;
     }
 
@@ -117,6 +117,7 @@ public class Employee {
 
     public String toString()    {
         return " Employee ID [ " +
+                ", ID: " + getEmployeeID() +
                 ", Name Prefix: " + getNamePrefix() +
                 ", First Name: " + getFirstName() +
                 ", Last Name: " + getLastName() +

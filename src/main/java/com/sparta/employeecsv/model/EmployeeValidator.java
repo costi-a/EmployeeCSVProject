@@ -17,9 +17,11 @@ public class EmployeeValidator {
                 );
         return employee;
     }
-    private Integer parseEmployeeID(String employeeID) {
-        if (employeeID.matches("\\d{1,9}")) {
-            return Integer.valueOf(employeeID);
+
+    // id.length needs to be between 4 and 9
+    private String parseEmployeeID(String employeeID) {
+        if (employeeID.matches("\\d{4,9}")) {
+            return employeeID;
         }
         return null;
     }
@@ -33,13 +35,13 @@ public class EmployeeValidator {
         return null;
     }
     private String parseName(String name) {
-        if (name.length() < 1 || name == null )   {
+        if (name.length() < 1 || name == null ) {
             return null;
         }
         return name;
     }
     private Character parseMidInitial(String middleInitial) {
-        if (middleInitial.length() != 1 || middleInitial == null)   {
+        if (middleInitial.length() != 1 || middleInitial == null) {
             return null;
         }
         return middleInitial.charAt(0);
@@ -90,6 +92,7 @@ public class EmployeeValidator {
         return sqlDate;
     }
 
+    // doesn't accept salary that starts with 0
     private Float parseSalary(String salary) {
         if ((salary).matches("(?!0+(?:\\\\.0+)?$)[0-9]+(?:\\\\.[0-9]+)?"))   {
             return Float.valueOf(salary);

@@ -50,7 +50,7 @@ public class DatabaseDriver {
             PreparedStatement ps = connection.prepareStatement(getInsertSQL());
 
             for (Employee employee : employeeList)  {
-                ps.setInt(1, employee.getEmployeeID());
+                ps.setString(1, employee.getEmployeeID());
                 ps.setString(2, employee.getNamePrefix());
                 ps.setString(3, employee.getFirstName());
                 ps.setString(4, employee.getMiddleInitial().toString());

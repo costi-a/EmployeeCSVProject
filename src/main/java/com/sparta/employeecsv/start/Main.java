@@ -1,8 +1,0 @@
-package com.sparta.employeecsv.start;
-
-public class Main {
-
-    public static void main( String[] args ) {
-        Starter.start();
-    }
-}
