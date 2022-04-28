@@ -1,15 +1,19 @@
 package DAO;
 
 import com.sparta.employeecsv.database.ConnectionFactory;
+import com.sparta.employeecsv.database.DatabaseDriver;
 import com.sparta.employeecsv.model.Employee;
 
+import javax.xml.crypto.Data;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.List;
 
 public class EmployeeDAO{
+
     public boolean createEmployee(Employee newEmployee){
         Employee employee = new Employee();
         return false;
@@ -40,9 +44,7 @@ public class EmployeeDAO{
         }
         return result;
     }
-    public ArrayList<Employee> getAllEmployees(){
-        return null;
-    }
+    public ArrayList<Employee> getEmployees()   { return null; }
     public boolean deleteEmployeeById(int employee_id){
         return false;
     }
