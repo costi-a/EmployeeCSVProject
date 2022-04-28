@@ -40,7 +40,7 @@ public class Manager {
             dbDriver.createTable();
 
             // calculating an employee list with unique ids
-            LinkedList<Employee> uniqueEmployees = hd.returnUniqueEmployees(employeesList, mapIds);
+            LinkedList<Employee> uniqueEmployees = uniqueValues.returnUniqueEmployees(employeesList, mapIds);
             // populating the table with unique ids employees
             dbDriver.populateTable(uniqueEmployees);
         } catch (Exception e) {

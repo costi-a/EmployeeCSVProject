@@ -63,24 +63,4 @@ public class HandleDuplicates {
         }
         return duplicatesIds;
     }
-
-    public LinkedList<Employee> returnUniqueEmployees(LinkedList<Employee> employeesList,
-                                                      Map<String, Integer> mapIds) {
-        LinkedList<Employee> uniqueEmployees = new LinkedList<>();
-
-        try {
-            for(int i = 0; i < employeesList.size(); i++) {
-                Employee employee = employeesList.get(i);
-
-                for(String id: mapIds.keySet()) {
-                    if(employee.getEmployeeID().equals(id) && mapIds.get(id) == 1) {
-                        uniqueEmployees.add(employee);
-                    }
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return uniqueEmployees;
-    }
 }
