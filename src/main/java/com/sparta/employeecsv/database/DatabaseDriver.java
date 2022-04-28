@@ -11,9 +11,9 @@ import java.util.LinkedList;
 import java.util.Properties;
 public class DatabaseDriver {
     private static Connection connection;
+
     public DatabaseDriver() throws SQLException {
         connection = ConnectionFactory.getConnection();
-        System.out.println("Connected");
     }
 
     public void createTable() {
@@ -34,7 +34,6 @@ public class DatabaseDriver {
                     ");";
             Statement st = connection.createStatement();
             st.executeUpdate(createTable);
-            st.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -42,8 +41,7 @@ public class DatabaseDriver {
 
     public void populateTable(LinkedList<Employee> employeeList) {
         //for each employee in the list get their details and add it to the database
-        try {
-            PreparedStatement ps = connection.prepareStatement(getInsertSQL());
+        try (PreparedStatement ps = connection.prepareStatement(getInsertSQL())) {
             for (Employee employee : employeeList) {
                 ps.setString(1, employee.getEmployeeID());
                 ps.setString(2, employee.getNamePrefix());
@@ -57,8 +55,7 @@ public class DatabaseDriver {
                 ps.setFloat(10, employee.getSalary());
                 ps.executeUpdate();
             }
-
-            ps.close();
+            System.out.println("EMPLOYEE_RECORDS updated correctly");
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -70,8 +67,6 @@ public class DatabaseDriver {
         try {
             Statement st = connection.createStatement();
             st.executeUpdate(drop);
-
-            //comment
         } catch (SQLException e) {
             e.printStackTrace();
         }

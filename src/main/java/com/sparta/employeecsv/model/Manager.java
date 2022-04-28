@@ -10,9 +10,11 @@ public class Manager {
             // reading the file
             EmployeeFileReader rf = new EmployeeFileReader();
             BufferedReader br = rf.readFile("EmployeeRecords.csv");
+
             // saving employees into list
             SaveEmployees saveEmployees = new SaveEmployees();
             LinkedList<Employee> employeesList = saveEmployees.saveEmployees(br);
+
             // storing ids that we will use with the HandleDuplicates
             StoringIds sIds = new StoringIds();
             LinkedList<String> ids = sIds.storeIds(employeesList);
@@ -23,17 +25,24 @@ public class Manager {
             Map<String, Integer> mapIds = hd.returnHashMapIds(ids);
             // counting duplicates
             int duplicateIds = hd.calculateSumDuplicates(mapIds);
+
             // calculating unique values
             HandleUniqueValues uniqueValues = new HandleUniqueValues();
             int uniqueIds = uniqueValues.calculateUniqueIds(mapIds);
+
             // displaying the info
             DisplayInfo dInfo = new DisplayInfo();
             dInfo.printResults(duplicateIds, uniqueIds, employeesList);
+
             // dropping and creating table
             DatabaseDriver dbDriver = new DatabaseDriver();
             dbDriver.clearTable();
             dbDriver.createTable();
-            dbDriver.populateTable(employeesList);
+
+            // calculating an employee list with unique ids
+            LinkedList<Employee> uniqueEmployees = uniqueValues.returnUniqueEmployees(employeesList, mapIds);
+            // populating the table with unique ids employees
+            dbDriver.populateTable(uniqueEmployees);
         } catch (Exception e) {
             e.printStackTrace();
         }
