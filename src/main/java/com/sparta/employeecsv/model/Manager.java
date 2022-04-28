@@ -1,4 +1,5 @@
 package com.sparta.employeecsv.model;
+import com.sparta.employeecsv.database.ConnectionFactory;
 import com.sparta.employeecsv.database.DatabaseDriver;
 import com.sparta.employeecsv.display.DisplayInfo;
 import java.io.BufferedReader;
@@ -43,6 +44,10 @@ public class Manager {
             LinkedList<Employee> uniqueEmployees = uniqueValues.returnUniqueEmployees(employeesList, mapIds);
             // populating the table with unique ids employees
             dbDriver.populateTable(uniqueEmployees);
+
+            // closing connection
+            ConnectionFactory cf = new ConnectionFactory();
+            cf.closeConnection();
         } catch (Exception e) {
             e.printStackTrace();
         }
