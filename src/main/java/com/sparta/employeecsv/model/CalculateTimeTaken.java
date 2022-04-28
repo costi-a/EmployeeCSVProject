@@ -2,13 +2,23 @@ package com.sparta.employeecsv.model;
 
 public class CalculateTimeTaken {
     public long calculateStartTime() {
-        long startTimeSeconds = System.currentTimeMillis() / 1000;
-        return startTimeSeconds;
+        try {
+            long startTimeSeconds = System.currentTimeMillis() / 1000;
+            return startTimeSeconds;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
     }
 
     public long calculateEndTime(long startTimeSeconds) {
-        long endTimeSeconds = System.currentTimeMillis() / 1000;
-        long duration = endTimeSeconds - startTimeSeconds;
-        return duration;
+        try {
+            long endTimeSeconds = System.currentTimeMillis() / 1000;
+            long duration = endTimeSeconds - startTimeSeconds;
+            return duration;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
     }
 }

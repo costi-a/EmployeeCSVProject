@@ -15,7 +15,7 @@ public class DatabaseDriver {
         connection = ConnectionFactory.getConnection();
     }
 
-    public void createTable() {
+    public void createTableUniqueEmployee() {
         try {
             //create the employee list table in the database
             String createTable = "CREATE TABLE EMPLOYEE_RECORDS (" +
@@ -38,7 +38,51 @@ public class DatabaseDriver {
         }
     }
 
-    public void populateTable(LinkedList<Employee> employeeList) {
+    public void createTableDuplicatesEmployee() {
+        try {
+            //create the employee list table in the database
+            String createTable = "CREATE TABLE EMPLOYEE_DUP_RECORDS (" +
+                    "EmployeeID VARCHAR(6)," +
+                    "NamePrefix VARCHAR(6)," +
+                    "FirstName VARCHAR(25)," +
+                    "MiddleInitial CHAR(1)," +
+                    "LastName VARCHAR(25)," +
+                    "Gender CHAR(1)," +
+                    "Email VARCHAR(50)," +
+                    "DateOfBirth DATE," +
+                    "DateOfJoining DATE," +
+                    "Salary DECIMAL(10,2)" +
+                    ");";
+            Statement st = connection.createStatement();
+            st.executeUpdate(createTable);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void populateTableDuplicateEmployee(LinkedList<Employee> employeeList) {
+        //for each employee in the list get their details and add it to the database
+        try (PreparedStatement ps = connection.prepareStatement(getInsertDuplicatesSQL())) {
+            for (Employee employee : employeeList) {
+                ps.setString(1, employee.getEmployeeID());
+                ps.setString(2, employee.getNamePrefix());
+                ps.setString(3, employee.getFirstName());
+                ps.setString(4, employee.getMiddleInitial().toString());
+                ps.setString(5, employee.getLastName());
+                ps.setString(6, employee.getGender().toString());
+                ps.setString(7, employee.getEmailAddress());
+                ps.setDate(8, employee.getDateOfBirth());
+                ps.setDate(9, employee.getDateOfJoining());
+                ps.setFloat(10, employee.getSalary());
+                ps.executeUpdate();
+            }
+            System.out.println("EMPLOYEE_DUP_RECORDS updated correctly");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void populateTableUniqueEmployee(LinkedList<Employee> employeeList) {
         //for each employee in the list get their details and add it to the database
         try (PreparedStatement ps = connection.prepareStatement(getInsertSQL())) {
             for (Employee employee : employeeList) {
@@ -60,7 +104,18 @@ public class DatabaseDriver {
         }
     }
 
-    public void clearTable()    {
+    public void clearDuplicateTable()    {
+        //drop the table from the database
+        String drop = "DROP TABLE IF EXISTS EMPLOYEE_DUP_RECORDS";
+        try {
+            Statement st = connection.createStatement();
+            st.executeUpdate(drop);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void clearUniqueTable()    {
         //drop the table from the database
         String drop = "DROP TABLE IF EXISTS EMPLOYEE_RECORDS";
         try {
@@ -69,6 +124,18 @@ public class DatabaseDriver {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    private String getInsertDuplicatesSQL() {
+        Properties sqlProps = new Properties();
+        try {
+            sqlProps.load(new FileReader("sql.properties"));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return sqlProps.getProperty("db.sql-insert-duplicates");
     }
 
     private String getInsertSQL() {
@@ -83,6 +150,4 @@ public class DatabaseDriver {
         }
         return sqlProps.getProperty("db.sql-insert");
     }
-
-
 }

@@ -63,4 +63,26 @@ public class HandleDuplicates {
         }
         return duplicatesIds;
     }
+
+    public LinkedList<Employee> returnDuplicatesEmployees(LinkedList<String> duplicatesIds,
+                                                        LinkedList<Employee> employeesList) {
+        LinkedList<Employee> duplicatesEmployees = new LinkedList<>();
+
+        try {
+            // loop that goes inside ALL the employees
+            for(int i = 0; i < employeesList.size(); i++) {
+                // 1 employee
+                Employee employee = employeesList.get(i);
+
+                // if the ID of the employee matches the one inside duplicate list we
+                // add employee inside another list
+                if(duplicatesIds.contains(employee.getEmployeeID())) {
+                    duplicatesEmployees.add(employee);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return duplicatesEmployees;
+    }
 }
