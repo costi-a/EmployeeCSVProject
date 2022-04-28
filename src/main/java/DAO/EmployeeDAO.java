@@ -24,7 +24,7 @@ public class EmployeeDAO{
         try {
             Statement statement = conn.createStatement();
             ResultSet rs = statement.executeQuery(
-                    "SELECT * FROM employee WHERE employee_id=" + employee_id);
+                    "SELECT * FROM EMPLOYEE_RECORDS WHERE employee_id=" + employee_id);
             if (rs.next() == false) return null;
             result = new Employee(
                     rs.getString("EmployeeID"),
