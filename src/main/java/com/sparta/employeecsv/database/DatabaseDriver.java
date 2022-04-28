@@ -3,11 +3,10 @@ import com.sparta.employeecsv.model.Employee;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
+import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Properties;
 public class DatabaseDriver {
     private static Connection connection;
@@ -84,4 +83,6 @@ public class DatabaseDriver {
         }
         return sqlProps.getProperty("db.sql-insert");
     }
+
+
 }
