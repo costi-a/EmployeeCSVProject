@@ -28,23 +28,6 @@ public class EmployeeDAO{
         ResultSet rs = null;
 
         try {
-            Statement statement = conn.createStatement();
-            ResultSet rs = statement.executeQuery(
-                    "SELECT * FROM EMPLOYEE_RECORDS WHERE employee_id=" + employee_id);
-            if (rs.next() == false) return null;
-            result = new Employee(
-                    rs.getString("EmployeeID"),
-                    rs.getString("NamePrefix"),
-                    rs.getString("FirstName"),
-                    rs.getString("MiddleInitial"),
-                    rs.getString("LastName"),
-                    rs.getString("Gender"),
-                    rs.getString("Email"),
-                    rs.getDate("DateOfBirth"),
-                    rs.getDate("DateOfJoining"),
-                    rs.getInt("Salary"),
-                    rs.getTimestamp("last_update"));
-        } catch(SQLException e){
             Statement statement = connection.createStatement();
             rs = statement.executeQuery(query);
 
