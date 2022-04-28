@@ -21,7 +21,6 @@ public class EmployeeDAO{
     }
 
     public ArrayList<Employee> getEmployees()   {
-
         String query = "SELECT * FROM EMPLOYEE_RECORDS";
         ArrayList<Employee> list = new ArrayList<>();
         Employee employee = null;

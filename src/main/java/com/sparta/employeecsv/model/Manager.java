@@ -37,6 +37,11 @@ public class Manager {
 
             // dropping and creating table
             DatabaseDriver dbDriver = new DatabaseDriver();
+
+            // calculating time taken
+            CalculateTimeTaken ct = new CalculateTimeTaken();
+            long startTimeSeconds = ct.calculateStartTime();
+
             dbDriver.clearTable();
             dbDriver.createTable();
 
@@ -44,6 +49,12 @@ public class Manager {
             LinkedList<Employee> uniqueEmployees = uniqueValues.returnUniqueEmployees(employeesList, mapIds);
             // populating the table with unique ids employees
             dbDriver.populateTable(uniqueEmployees);
+
+            // calculating time taken
+            long duration = ct.calculateEndTime(startTimeSeconds);
+
+            // printing time taken
+            dInfo.printTimeTaken(duration);
 
             // closing connection
             ConnectionFactory cf = new ConnectionFactory();
