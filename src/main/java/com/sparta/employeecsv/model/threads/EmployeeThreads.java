@@ -51,8 +51,8 @@ public class EmployeeThreads implements Runnable    {
 
     @Override
     public void run() {
-        LinkedList<LinkedList<Employee>> splitEmployeeList = splitList(200);
-        //split the list into 200 threads and run them in the manager
+        LinkedList<LinkedList<Employee>> splitEmployeeList = splitList(5);
+        //split the list into 5 threads and run them in the manager
 
         ThreadManager tm = new ThreadManager(splitEmployeeList);
         try {

@@ -21,9 +21,11 @@ public class LargeThreadTest {
         SaveEmployees saveEmployees = new SaveEmployees();
         LinkedList<Employee> employeesList = saveEmployees.saveEmployees(br);
 
-        EmployeeThreads employeeThread = new EmployeeThreads(employeesList);
-
         DatabaseDriver databaseDriver = new DatabaseDriver();
+        databaseDriver.clearUniqueTable();
+        databaseDriver.createTableUniqueEmployee();
+
+        EmployeeThreads employeeThread = new EmployeeThreads(employeesList);
 
         employeeThread.run();
 
