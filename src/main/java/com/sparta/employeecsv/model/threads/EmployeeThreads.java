@@ -1,14 +1,16 @@
 package com.sparta.employeecsv.model.threads;
 
 import com.sparta.employeecsv.database.ConnectionFactory;
+import com.sparta.employeecsv.database.DatabaseDriver;
 import com.sparta.employeecsv.model.Employee;
 
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.LinkedList;
 
 public class EmployeeThreads implements Runnable    {
 
-    private LinkedList<Employee> employees;
+    private static LinkedList<Employee> employees;
     private  Connection connection;
 
     public EmployeeThreads(LinkedList<Employee> employees) {
@@ -17,7 +19,7 @@ public class EmployeeThreads implements Runnable    {
     }
 
     // split the list of employees into smaller lists of a given amount
-    private LinkedList<LinkedList<Employee>> splitList(int splitSize) {
+    public static LinkedList<LinkedList<Employee>> splitList(int splitSize) {
 
         LinkedList<LinkedList<Employee>> splitEmployeeList = new LinkedList<>();
 
@@ -51,17 +53,19 @@ public class EmployeeThreads implements Runnable    {
 
     @Override
     public void run() {
-        LinkedList<LinkedList<Employee>> splitEmployeeList = splitList(10);
-        //split the list into 5 threads and run them in the manager
-
-        ThreadManager tm = new ThreadManager(splitEmployeeList);
-
         try {
-            tm.createThreads();
-            tm.runThreads();
-        } catch (InterruptedException e) {
+            threadInDatabase();
+        } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+
+    }
+
+    public void threadInDatabase() throws SQLException {
+        LinkedList<LinkedList<Employee>> splitList = splitList(30000);
+
+        DatabaseDriver databaseDriver = new DatabaseDriver();
+        databaseDriver.populateTableMultiList(splitList);
     }
 
 }

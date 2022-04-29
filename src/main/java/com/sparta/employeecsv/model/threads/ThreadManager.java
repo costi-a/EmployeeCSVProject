@@ -2,32 +2,28 @@ package com.sparta.employeecsv.model.threads;
 
 import com.sparta.employeecsv.model.Employee;
 
-import java.util.Iterator;
 import java.util.LinkedList;
 
 public class ThreadManager {
 
-    public Thread[] employeeThreads;
+    public static Thread[] employeeThreads;
 
-    private final LinkedList<LinkedList<Employee>> splitEmployeeList;
+    public void createThreads(LinkedList<LinkedList<Employee>> splitEmployeeList) throws IllegalThreadStateException {
 
-    public ThreadManager(LinkedList<LinkedList<Employee>> splitEmployeeList) {
-        this.splitEmployeeList = splitEmployeeList;
-    }
-
-    public void createThreads() throws InterruptedException {
         employeeThreads = new Thread[splitEmployeeList.size()];
+        System.out.println(splitEmployeeList.size());
 
         //create the threads
         for (int i = 0; i < employeeThreads.length; i++) {
             employeeThreads[i] = new Thread(new EmployeeThreads(splitEmployeeList.get(i)));
+            System.out.println("Thread Created");
         }
     }
 
-    public void runThreads()    {
-
+    public void runThreads() throws IllegalThreadStateException    {
         for (int i = 0; i < employeeThreads.length; i++)    {
             employeeThreads[i].start();
+            System.out.println("Thread Running");
             try {
                 employeeThreads[i].join();
             } catch (InterruptedException e) {
