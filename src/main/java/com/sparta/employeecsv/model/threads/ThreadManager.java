@@ -17,14 +17,15 @@ public class ThreadManager {
 
     public void runThreads() throws InterruptedException {
         employeeThreads = new Thread[splitEmployeeList.size()];
+        System.out.println("aaa " + splitEmployeeList.size());
 
         //run the threads
-        for (int i = 0; i < employeeThreads.length; i++)    {
+        for (int i = 0; i < employeeThreads.length; i++) {
             employeeThreads[i] = new Thread( new EmployeeThreads(splitEmployeeList.get(i)));
             employeeThreads[i].start();
         }
 
-        for (int i = 0; i < employeeThreads.length; i++)    {
+        for (int i = 0; i < employeeThreads.length; i++) {
             employeeThreads[i].join();
         }
     }

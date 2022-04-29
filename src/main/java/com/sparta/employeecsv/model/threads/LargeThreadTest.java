@@ -11,7 +11,6 @@ import java.sql.SQLException;
 import java.util.LinkedList;
 
 public class LargeThreadTest {
-
     public static void main(String[] args) throws IOException, SQLException {
 
         EmployeeFileReader rf = new EmployeeFileReader();

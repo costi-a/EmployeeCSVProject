@@ -3,6 +3,7 @@ package com.sparta.employeecsv.model;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
+import java.util.Set;
 
 public class HandleDuplicates {
     public Map<String, Integer> returnHashMapIds(LinkedList<String> ids) {
@@ -12,13 +13,23 @@ public class HandleDuplicates {
         try {
             // if id doesn't exists we put into the hashmap the id as a key and the value 1
             // if id exists we just increase the value by 1
+            /*
             for(String id: ids) {
                 if(mapIds.containsKey(id)) {
                     mapIds.put(id, mapIds.get(id) + 1);
                 } else {
                     mapIds.put(id, 1);
                 }
-            }
+            } */
+
+            ids.stream()
+                    .forEach(id -> {
+                        if(mapIds.containsKey(id)) {
+                            mapIds.put(id, mapIds.get(id) + 1);
+                        } else {
+                            mapIds.put(id, 1);
+                        }
+                    });
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -27,11 +38,10 @@ public class HandleDuplicates {
 
     public int calculateSumDuplicates(Map<String, Integer> mapIds) {
         int sum = 0;
+        // here there are all the values of the hashmap greater than 1 (how many duplicates id)
+        LinkedList<Integer> duplicatesNumbers = new LinkedList<>();
 
-        try {
-            // here there are all the values of the hashmap greater than 1 (how many duplicates id)
-            LinkedList<Integer> duplicatesNumbers = new LinkedList<>();
-
+        try { /*
             for(String id: mapIds.keySet()) {
                 if(mapIds.get(id) > 1) {
                     duplicatesNumbers.add(mapIds.get(id));
@@ -41,7 +51,19 @@ public class HandleDuplicates {
             // here we are calculating how many duplicates ids we have by just adding the values
             for(int i = 0; i < duplicatesNumbers.size(); i++) {
                 sum += duplicatesNumbers.get(i);
-            }
+            } */
+
+            Set<Map.Entry<String, Integer>> entries = mapIds.entrySet();
+
+            entries.stream()
+                    .filter(id -> id.getValue() > 1)
+                    .forEach(id -> {
+                        duplicatesNumbers.add(id.getValue());
+                    });
+
+            sum = duplicatesNumbers.stream()
+                    .reduce((a, b) -> a + b)
+                    .get();
         } catch (Exception e) {
             e.printStackTrace();
         }

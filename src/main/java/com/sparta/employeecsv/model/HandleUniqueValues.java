@@ -1,20 +1,26 @@
 package com.sparta.employeecsv.model;
 
-import java.util.LinkedList;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class HandleUniqueValues {
     public int calculateUniqueIds(Map<String, Integer> mapIds) {
         // here we will count the ids with value of 1
         int counter = 0;
 
-        try {
+        try { /*
             // if key (id) as a value of 1 we increase the counter
             for(String id: mapIds.keySet()) {
                 if(mapIds.get(id) == 1) {
                     counter++;
                 }
-            }
+            } */
+
+            Set<Map.Entry<String, Integer>> entries = mapIds.entrySet();
+            List uniqueIds = entries.stream()
+                    .filter(id -> id.getValue() == 1)
+                    .toList();
+            counter = uniqueIds.size();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -25,7 +31,7 @@ public class HandleUniqueValues {
                                                       Map<String, Integer> mapIds) {
         LinkedList<Employee> uniqueEmployees = new LinkedList<>();
 
-        try {
+        try { /*
             // looping into employees list with duplicates
             for(int i = 0; i < employeesList.size(); i++) {
                 // saving employee so that we can compare the dulicate ids
@@ -39,7 +45,19 @@ public class HandleUniqueValues {
                         uniqueEmployees.add(employee);
                     }
                 }
-            }
+            } */
+
+            Set<Map.Entry<String, Integer>> entries = mapIds.entrySet();
+            entries.stream()
+                    .filter(id -> id.getValue() == 1)
+                    .forEach(id -> {
+                        employeesList.stream()
+                                .filter(employee -> employee.getEmployeeID().equals(id.getKey()))
+                                .forEach(employee -> {
+                                    uniqueEmployees.add(employee);
+                                });
+                    });
+
         } catch (Exception e) {
             e.printStackTrace();
         }

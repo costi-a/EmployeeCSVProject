@@ -58,15 +58,15 @@ public class Manager {
             dbDriver.clearUniqueTable();
             dbDriver.createTableUniqueEmployee();
 
+            // populating the table with unique ids employees
+            dbDriver.populateTableUniqueEmployee(uniqueEmployees);
+
             // dropping, creating table duplicate employee tables
             dbDriver.clearDuplicateTable();
             dbDriver.createTableDuplicatesEmployee();
 
             // populating the table with duplicate ids employees
             dbDriver.populateTableDuplicateEmployee(duplicatesEmployees);
-
-            // populating the table with unique ids employees
-            dbDriver.populateTableUniqueEmployee(uniqueEmployees);
 
             // calculating time taken
             long duration = ct.calculateEndTime(startTimeSeconds);

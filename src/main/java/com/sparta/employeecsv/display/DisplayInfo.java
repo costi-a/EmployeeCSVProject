@@ -20,7 +20,8 @@ public class DisplayInfo {
     }
 
     public void printTimeTaken(long duration) {
-        System.out.println("it took " + duration + " seconds to clear the table, create it and " +
+        System.out.println("it took " + duration + " second" + (duration > 1 ? "s" : "")
+                + " to clear the table, create it and " +
                 "write data into db");
     }
 }

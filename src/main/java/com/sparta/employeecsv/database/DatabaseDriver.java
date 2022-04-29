@@ -41,7 +41,7 @@ public class DatabaseDriver {
     public void createTableDuplicatesEmployee() {
         try {
             //create the employee list table in the database
-            String createTable = "CREATE TABLE EMPLOYEE_DUP_RECORDS (" +
+            String createDuplicateTable = "CREATE TABLE EMPLOYEE_DUP_RECORDS (" +
                     "EmployeeID VARCHAR(6)," +
                     "NamePrefix VARCHAR(6)," +
                     "FirstName VARCHAR(25)," +
@@ -51,10 +51,11 @@ public class DatabaseDriver {
                     "Email VARCHAR(50)," +
                     "DateOfBirth DATE," +
                     "DateOfJoining DATE," +
-                    "Salary DECIMAL(10,2)" +
+                    "Salary DECIMAL(10,2)," +
+                    
                     ");";
             Statement st = connection.createStatement();
-            st.executeUpdate(createTable);
+            st.executeUpdate(createDuplicateTable);
         } catch (SQLException e) {
             e.printStackTrace();
         }
