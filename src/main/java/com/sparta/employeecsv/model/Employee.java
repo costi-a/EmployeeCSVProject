@@ -31,10 +31,6 @@ public class Employee {
         this.salary         = salary;
     }
 
-    public Employee(String employeeID, String namePrefix, String firstName, Character middleInitial, String lastName, Character gender, String emailAddress, java.util.Date date, java.util.Date parseDate, Float salary)   {
-        super();
-    }
-
     public Employee() {}
 
     public String getEmployeeID() {

@@ -105,7 +105,7 @@ public class EmployeeValidator {
         }
         return null;
     }
-    private Date parseDate(String date) throws ParseException {
+    private Date parseDate(String date) {
         java.util.Date newDate = null;
         Date sqlDate = null;
 

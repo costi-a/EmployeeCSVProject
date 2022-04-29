@@ -1,4 +1,5 @@
 package com.sparta.employeecsv.model;
+import DAO.EmployeeDAO;
 import com.sparta.employeecsv.database.ConnectionFactory;
 import com.sparta.employeecsv.database.DatabaseDriver;
 import com.sparta.employeecsv.display.DisplayInfo;
@@ -25,7 +26,14 @@ public class Manager {
             // so that we can check duplicates and unique values
             Map<String, Integer> mapIds = hd.returnHashMapIds(ids);
             // counting duplicates
-            int duplicateIds = hd.calculateSumDuplicates(mapIds);
+            int duplicateIdsInt = hd.calculateSumDuplicates(mapIds);
+
+            // returning all the employees ids
+            LinkedList<String> duplicatesIds = hd.returnIds(mapIds);
+
+            // returning a list of duplicate ids
+            LinkedList<Employee> duplicatesEmployees = hd.returnDuplicatesEmployees(duplicatesIds,
+                    employeesList);
 
             // calculating unique values
             HandleUniqueValues uniqueValues = new HandleUniqueValues();
@@ -33,17 +41,44 @@ public class Manager {
 
             // displaying the info
             DisplayInfo dInfo = new DisplayInfo();
-            dInfo.printResults(duplicateIds, uniqueIds, employeesList);
+            dInfo.printResults(duplicateIdsInt, uniqueIds, employeesList);
+
+            // calculating an employee list with unique ids
+            LinkedList<Employee> uniqueEmployees = uniqueValues.returnUniqueEmployees(employeesList,
+                    mapIds);
 
             // dropping and creating table
             DatabaseDriver dbDriver = new DatabaseDriver();
-            dbDriver.clearTable();
-            dbDriver.createTable();
 
-            // calculating an employee list with unique ids
-            LinkedList<Employee> uniqueEmployees = uniqueValues.returnUniqueEmployees(employeesList, mapIds);
+            // calculating first parameter for method calculate time taken
+            CalculateTimeTaken ct = new CalculateTimeTaken();
+            long startTimeSeconds = ct.calculateStartTime();
+
+            // dropping, creating table unique employee tables
+            dbDriver.clearUniqueTable();
+            dbDriver.createTableUniqueEmployee();
+
+            // dropping, creating table duplicate employee tables
+            dbDriver.clearDuplicateTable();
+            dbDriver.createTableDuplicatesEmployee();
+
+            // populating the table with duplicate ids employees
+            dbDriver.populateTableDuplicateEmployee(duplicatesEmployees);
+
             // populating the table with unique ids employees
-            dbDriver.populateTable(uniqueEmployees);
+            dbDriver.populateTableUniqueEmployee(uniqueEmployees);
+
+            // calculating time taken
+            long duration = ct.calculateEndTime(startTimeSeconds);
+
+            // printing time taken
+            dInfo.printTimeTaken(duration);
+
+            // finding and removing employee by ID
+            EmployeeDAO eDAO = new EmployeeDAO();
+            Employee employee = eDAO.getEmployeeByID("198429");
+            System.out.println("emp " + employee);
+            eDAO.deleteEmployeeById("111282");
 
             // closing connection
             ConnectionFactory cf = new ConnectionFactory();
