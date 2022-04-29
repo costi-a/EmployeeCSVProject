@@ -73,13 +73,20 @@ public class HandleDuplicates {
     public LinkedList<String> returnIds(Map<String, Integer> mapIds) {
         LinkedList<String> duplicatesIds = new LinkedList<>();
 
-        try {
+        try { /*
             // if value of key (id) is greater than one we add it to the LinkedList
             for(String id: mapIds.keySet()) {
                 if(mapIds.get(id) > 1) {
                     duplicatesIds.add(id);
                 }
-            }
+            } */
+
+            Set<Map.Entry<String, Integer>> entries = mapIds.entrySet();
+            entries.stream()
+                    .filter(id -> id.getValue() > 1)
+                    .forEach(id -> {
+                        duplicatesIds.add(id.getKey());
+                    });
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -90,7 +97,7 @@ public class HandleDuplicates {
                                                         LinkedList<Employee> employeesList) {
         LinkedList<Employee> duplicatesEmployees = new LinkedList<>();
 
-        try {
+        try { /*
             // loop that goes inside ALL the employees
             for(int i = 0; i < employeesList.size(); i++) {
                 // 1 employee
@@ -101,7 +108,18 @@ public class HandleDuplicates {
                 if(duplicatesIds.contains(employee.getEmployeeID())) {
                     duplicatesEmployees.add(employee);
                 }
-            }
+            } */
+
+            employeesList.stream()
+                    .forEach(employee -> {
+                        duplicatesIds.stream()
+                                .forEach(id -> {
+                                    if(id.contains(employee.getEmployeeID())) {
+                                        duplicatesEmployees.add(employee);
+                                    }
+                                });
+                    });
+
         } catch (Exception e) {
             e.printStackTrace();
         }
