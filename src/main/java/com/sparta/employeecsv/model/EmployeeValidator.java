@@ -42,7 +42,7 @@ public class EmployeeValidator {
         try {
             boolean rightPrefix = namePrefix.equals("Mrs.") || namePrefix.equals("Mr.") ||
                     namePrefix.equals("Ms.") || namePrefix.equals("Dr.") || namePrefix.equals("Hon.") ||
-                    namePrefix.equals("Drs.");
+                    namePrefix.equals("Drs.") || namePrefix.equals("Prof.");
             if (rightPrefix) {
                 return namePrefix;
             } else {
