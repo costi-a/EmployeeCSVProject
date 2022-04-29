@@ -51,15 +51,17 @@ public class EmployeeThreads implements Runnable    {
 
     @Override
     public void run() {
-        LinkedList<LinkedList<Employee>> splitEmployeeList = splitList(5);
+        LinkedList<LinkedList<Employee>> splitEmployeeList = splitList(10);
         //split the list into 5 threads and run them in the manager
 
         ThreadManager tm = new ThreadManager(splitEmployeeList);
+
         try {
+            tm.createThreads();
             tm.runThreads();
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
-
     }
+
 }

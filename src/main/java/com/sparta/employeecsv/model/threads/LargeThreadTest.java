@@ -1,7 +1,7 @@
 package com.sparta.employeecsv.model.threads;
 
+import com.sparta.employeecsv.database.ConnectionFactory;
 import com.sparta.employeecsv.database.DatabaseDriver;
-import com.sparta.employeecsv.model.Employee;
 import com.sparta.employeecsv.model.EmployeeFileReader;
 import com.sparta.employeecsv.model.SaveEmployees;
 
@@ -19,16 +19,19 @@ public class LargeThreadTest {
 
         // saving employees into list
         SaveEmployees saveEmployees = new SaveEmployees();
-        LinkedList<Employee> employeesList = saveEmployees.saveEmployees(br);
+        LinkedList employeesList = saveEmployees.saveEmployees(br);
 
         DatabaseDriver databaseDriver = new DatabaseDriver();
         databaseDriver.clearUniqueTable();
         databaseDriver.createTableUniqueEmployee();
 
+
         EmployeeThreads employeeThread = new EmployeeThreads(employeesList);
 
         employeeThread.run();
 
+        ConnectionFactory cf = new ConnectionFactory();
+        cf.closeConnection();
 
     }
 }
