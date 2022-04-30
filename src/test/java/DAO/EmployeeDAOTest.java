@@ -2,6 +2,7 @@ package DAO;
 
 import com.sparta.employeecsv.model.Employee;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.sql.*;
@@ -10,61 +11,62 @@ import java.util.ArrayList;
 import static org.junit.jupiter.api.Assertions.*;
 
 class EmployeeDAOTest {
-    private EmployeeDAO employeeDAO;
 
     @Test
-    void getEmployeesTest() {
-        employeeDAO = new EmployeeDAO();
-        ArrayList<Employee> list = new ArrayList<>();
-
-
-    }
-
-    @Test
-    public void testReadEmployee() throws SQLException {
-        employeeDAO = new EmployeeDAO();
-        Connection conn = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/sys", "root", "Zidane.92");
-        Statement statement = conn.createStatement();
-        String query = "SELECT * FROM EMPLOYEE_RECORDS WHERE EmployeeID = 111282";
-        ResultSet rs = statement.executeQuery(query);
-        if(!rs.isBeforeFirst()){
-            System.out.println("result set is empty");
-        }
-        else {
-            System.out.println("Result set is not empty");
-        }
-
-    }
-
-
-    @Test
-    void testInsertEmployee() throws SQLException {
+    @DisplayName("1st - Test if insert works")
+    void insertEmployeeTest() throws SQLException {
         try {
-            Connection conn = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/sys", "root", "Zidane.92");
+            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost/sys", "root", "Zidane.92");
             Statement statement = conn.createStatement();
-            String query = " insert into employee_records (employeeID, namePrefix, firstName, middleInitial, " +
-                    "lastName, gender, emailAddress, dateOfBirth, dateOfJoining, salary)"
-                    + " values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            String query = "INSERT INTO EMPLOYEE_RECORDS (employeeID, namePrefix, firstName, middleInitial, " +
+                    "lastName, gender, email, dateOfBirth, dateOfJoining, salary)"
+                    + " VALUES ('222222','Mr.','TestName','X','TestLastName','M','Test@email.com','1982/12/12','1999/12/12','5555.56')";
 
             PreparedStatement preparedStmt = conn.prepareStatement(query);
-
-            preparedStmt.setString (1, "222222");
-            preparedStmt.setString (2, "Mr.");
-            preparedStmt.setString (3, "TestName");
-            preparedStmt.setString (4, "X");
-            preparedStmt.setString (5, "TestLastName");
-            preparedStmt.setString (6, "M");
-            preparedStmt.setString (7, "Test@email.com");
-            preparedStmt.setDate (8, Date.valueOf("1982/12/05"));
-            preparedStmt.setDate (9, Date.valueOf("2022/04/05"));
-            preparedStmt.setFloat (10, (float) 5000.56);
-
-            preparedStmt.execute();
-            conn.close();
+            boolean rs = preparedStmt.execute();
+            if(!rs){
+                System.out.println("new record created.");
+            }
+            else {
+                System.out.println("new record not created.");
+            }
         } catch (Exception e)
         {
             System.err.println("Got an exception!");
             System.err.println(e.getMessage());
         }
+    }
+
+    @Test
+    @DisplayName("2nd - Test to check if new record exists in the SQL database.")
+    public void getEmployeeByIdTest() throws SQLException {
+        Connection conn = DriverManager.getConnection("jdbc:mysql://localhost/sys", "root", "Zidane.92");
+        Statement statement = conn.createStatement();
+        String query = "SELECT * FROM EMPLOYEE_RECORDS WHERE EmployeeID = 222222";
+        PreparedStatement preparedStmt = conn.prepareStatement(query);
+        boolean rs = preparedStmt.execute();
+        if(!rs){
+            System.out.println("new record does not exist in the database.");
+        }
+        else {
+            System.out.println("new record exist in the database.");
+        }
+    }
+
+    @Test
+    @DisplayName("3rd - Test to check if new record has been deleted from the SQL database.")
+    public void EmployeeByIdTest() throws SQLException {
+        Connection conn = DriverManager.getConnection("jdbc:mysql://localhost/sys", "root", "Zidane.92");
+        Statement statement = conn.createStatement();
+        String query = "DELETE FROM EMPLOYEE_RECORDS WHERE EmployeeID = 222222";
+        PreparedStatement preparedStmt = conn.prepareStatement(query);
+        boolean rs = preparedStmt.execute();
+        if(!rs){
+            System.out.println("new record deleted.");
+        }
+        else {
+            System.out.println("new record not deleted.");
+        }
+        conn.close();
     }
 }

@@ -12,15 +12,17 @@ public class DisplayInfo {
                              LinkedList<Employee> employeesList) {
         try {
             System.out.println("List of employees: " + employeesList);
-            System.out.println("There are: " + uniqueIds + " unique ids");
-            System.out.println("There are: " + duplicateIds + " duplicates");
+            System.out.println("There " + (uniqueIds > 1 || uniqueIds == 0 ?
+                            "are: ": "is: ") + uniqueIds + " unique employees");
+            System.out.println("There " + (duplicateIds > 1 || duplicateIds == 0 ?
+                    "are: ": "is: ") + duplicateIds + " duplicates employees");
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     public void printTimeTaken(long duration) {
-        System.out.println("it took " + duration + " seconds to clear the table, create it and " +
-                "write data into db");
+        System.out.println("it took " + duration + " second" + (duration > 1 || duration == 0 ?
+                "s" : "") + " to clear the table, create it and write data into db");
     }
 }
