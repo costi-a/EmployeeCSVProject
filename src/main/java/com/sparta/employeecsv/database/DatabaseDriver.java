@@ -11,7 +11,7 @@ import java.util.Properties;
 public class DatabaseDriver {
     private static Connection connection;
 
-    public DatabaseDriver() throws SQLException {
+    public DatabaseDriver() {
         connection = ConnectionFactory.getConnection();
     }
 
@@ -38,10 +38,11 @@ public class DatabaseDriver {
         }
     }
 
-    public void createTableDuplicatesEmployee() {
+    // table for large file
+    public void createThreadTableUniqueEmployee() {
         try {
             //create the employee list table in the database
-            String createDuplicateTable = "CREATE TABLE EMPLOYEE_DUP_RECORDS (" +
+            String createThreadTable = "CREATE TABLE THREAD_EMPLOYEE_RECORDS (" +
                     "EmployeeID VARCHAR(6)," +
                     "NamePrefix VARCHAR(6)," +
                     "FirstName VARCHAR(25)," +
@@ -52,16 +53,60 @@ public class DatabaseDriver {
                     "DateOfBirth DATE," +
                     "DateOfJoining DATE," +
                     "Salary DECIMAL(10,2)," +
-                    
+                    "PRIMARY KEY (EmployeeID)" +
                     ");";
             Statement st = connection.createStatement();
-            st.executeUpdate(createDuplicateTable);
+            st.executeUpdate(createThreadTable);
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
-    public void populateTableDuplicateEmployee(LinkedList<Employee> employeeList) {
+    public void createTableDuplicatesEmployee() {
+        try {
+            //create the employee list table in the database
+            String createDupTable = "CREATE TABLE EMPLOYEE_DUP_RECORDS (" +
+                    "EmployeeID VARCHAR(6)," +
+                    "NamePrefix VARCHAR(6)," +
+                    "FirstName VARCHAR(25)," +
+                    "MiddleInitial CHAR(1)," +
+                    "LastName VARCHAR(25)," +
+                    "Gender CHAR(1)," +
+                    "Email VARCHAR(50)," +
+                    "DateOfBirth DATE," +
+                    "DateOfJoining DATE," +
+                    "Salary DECIMAL(10,2)" +
+                    ");";
+            Statement st = connection.createStatement();
+            st.executeUpdate(createDupTable);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void createThreadTableDuplicatesEmployee() {
+        try {
+            //create the employee list table in the database
+            String createThreadDupTable = "CREATE TABLE THREAD_EMPLOYEE_DUP_RECORDS (" +
+                    "EmployeeID VARCHAR(6)," +
+                    "NamePrefix VARCHAR(6)," +
+                    "FirstName VARCHAR(25)," +
+                    "MiddleInitial CHAR(1)," +
+                    "LastName VARCHAR(25)," +
+                    "Gender CHAR(1)," +
+                    "Email VARCHAR(50)," +
+                    "DateOfBirth DATE," +
+                    "DateOfJoining DATE," +
+                    "Salary DECIMAL(10,2)" +
+                    ");";
+            Statement st = connection.createStatement();
+            st.executeUpdate(createThreadDupTable);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void populateTableDuplicateEmployee(List<Employee> employeeList) {
         //for each employee in the list get their details and add it to the database
         try (PreparedStatement ps = connection.prepareStatement(getInsertDuplicatesSQL())) {
             for (Employee employee : employeeList) {
@@ -83,7 +128,30 @@ public class DatabaseDriver {
         }
     }
 
-    public void populateTableUniqueEmployee(LinkedList<Employee> employeeList) {
+    // populate large dup table
+    public void populateThreadTableDuplicateEmployee(List<Employee> employeeList) {
+        //for each employee in the list get their details and add it to the database
+        try (PreparedStatement ps = connection.prepareStatement(getInsertDuplicatesSQL())) {
+            for (Employee employee : employeeList) {
+                ps.setString(1, employee.getEmployeeID());
+                ps.setString(2, employee.getNamePrefix());
+                ps.setString(3, employee.getFirstName());
+                ps.setString(4, employee.getMiddleInitial().toString());
+                ps.setString(5, employee.getLastName());
+                ps.setString(6, employee.getGender().toString());
+                ps.setString(7, employee.getEmailAddress());
+                ps.setDate(8, employee.getDateOfBirth());
+                ps.setDate(9, employee.getDateOfJoining());
+                ps.setFloat(10, employee.getSalary());
+                ps.executeUpdate();
+            }
+            System.out.println("THREAD_EMPLOYEE_DUP_RECORDS updated correctly");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void populateTableUniqueEmployee(List<Employee> employeeList) {
         //for each employee in the list get their details and add it to the database
         try (PreparedStatement ps = connection.prepareStatement(getInsertSQL())) {
             for (Employee employee : employeeList) {
@@ -105,6 +173,29 @@ public class DatabaseDriver {
         }
     }
 
+    // populate large unique table
+    public void populateTableMultiList(List<Employee> employeeList) {
+        //for each employee in the list get their details and add it to the database
+        try (PreparedStatement ps = connection.prepareStatement(getInsertMultiListSQL())) {
+            for (Employee employee : employeeList) {
+                ps.setString(1, employee.getEmployeeID());
+                ps.setString(2, employee.getNamePrefix());
+                ps.setString(3, employee.getFirstName());
+                ps.setString(4, employee.getMiddleInitial().toString());
+                ps.setString(5, employee.getLastName());
+                ps.setString(6, employee.getGender().toString());
+                ps.setString(7, employee.getEmailAddress());
+                ps.setDate(8, employee.getDateOfBirth());
+                ps.setDate(9, employee.getDateOfJoining());
+                ps.setFloat(10, employee.getSalary());
+                ps.executeUpdate();
+            }
+            System.out.println("THREAD_EMPLOYEE_RECORDS updated correctly");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     public void clearDuplicateTable()    {
         //drop the table from the database
         String drop = "DROP TABLE IF EXISTS EMPLOYEE_DUP_RECORDS";
@@ -116,9 +207,33 @@ public class DatabaseDriver {
         }
     }
 
+    // large file
+    public void clearThreadDuplicateTable()    {
+        //drop the table from the database
+        String drop = "DROP TABLE IF EXISTS THREAD_EMPLOYEE_DUP_RECORDS";
+        try {
+            Statement st = connection.createStatement();
+            st.executeUpdate(drop);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     public void clearUniqueTable()    {
         //drop the table from the database
         String drop = "DROP TABLE IF EXISTS EMPLOYEE_RECORDS";
+        try {
+            Statement st = connection.createStatement();
+            st.executeUpdate(drop);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    // large file
+    public void clearThreadUniqueTable()    {
+        //drop the table from the database
+        String drop = "DROP TABLE IF EXISTS THREAD_EMPLOYEE_RECORDS";
         try {
             Statement st = connection.createStatement();
             st.executeUpdate(drop);
@@ -139,6 +254,18 @@ public class DatabaseDriver {
         return sqlProps.getProperty("db.sql-insert-duplicates");
     }
 
+    private String getInsertThreadDuplicatesSQL() {
+        Properties sqlProps = new Properties();
+        try {
+            sqlProps.load(new FileReader("sql.properties"));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return sqlProps.getProperty("db.sql-insert-duplicates-thread");
+    }
+
     private String getInsertSQL() {
         //get the sql insert property from the properties file
         Properties sqlProps = new Properties();
@@ -150,5 +277,18 @@ public class DatabaseDriver {
             e.printStackTrace();
         }
         return sqlProps.getProperty("db.sql-insert");
+    }
+
+    private String getInsertMultiListSQL() {
+        //get the sql insert property from the properties file
+        Properties sqlProps = new Properties();
+        try {
+            sqlProps.load(new FileReader("sql.properties"));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return sqlProps.getProperty("db.sql-insert-thread");
     }
 }

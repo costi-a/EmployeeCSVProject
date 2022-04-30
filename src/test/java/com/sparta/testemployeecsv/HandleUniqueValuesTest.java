@@ -1,8 +1,8 @@
 package com.sparta.testemployeecsv;
 
 import com.sparta.employeecsv.model.Employee;
-import com.sparta.employeecsv.model.EmployeeValidator;
-import com.sparta.employeecsv.model.HandleUniqueValues;
+import controller.EmployeeValidator;
+import controller.HandleUniqueValues;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 import java.text.ParseException;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 public class HandleUniqueValuesTest {
@@ -75,7 +76,7 @@ public class HandleUniqueValuesTest {
         Map<String, Integer> mapIds = new HashMap<>();
         mapIds.put("111111", 1);
 
-        LinkedList<Employee> result = handleUnique.returnUniqueEmployees(employeesList, mapIds);
+        List<Employee> result = handleUnique.returnUniqueEmployees(employeesList, mapIds);
 
         Assertions.assertEquals(employeesList, result);
     }
@@ -100,7 +101,7 @@ public class HandleUniqueValuesTest {
         mapIds.put("111111", 1);
         mapIds.put("111112", 1);
 
-        LinkedList<Employee> result = handleUnique.returnUniqueEmployees(employeesList, mapIds);
+        List<Employee> result = handleUnique.returnUniqueEmployees(employeesList, mapIds);
 
         Assertions.assertEquals(employeesList, result);
     }
@@ -119,7 +120,7 @@ public class HandleUniqueValuesTest {
         mapIds.put("111111", 1);
         mapIds.put("111112", 2);
 
-        LinkedList<Employee> result = handleUnique.returnUniqueEmployees(employeesList, mapIds);
+        List<Employee> result = handleUnique.returnUniqueEmployees(employeesList, mapIds);
 
         Assertions.assertEquals(employeesList, result);
     }
