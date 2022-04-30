@@ -1,8 +1,8 @@
 package com.sparta.testemployeecsv;
 
 import com.sparta.employeecsv.model.Employee;
-import com.sparta.employeecsv.model.EmployeeValidator;
-import com.sparta.employeecsv.model.StoringIds;
+import controller.EmployeeValidator;
+import controller.StoringIds;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

@@ -23,7 +23,7 @@ public class ConnectionFactory {
                         dbProps.getProperty("db.url"),
                         dbProps.getProperty("db.username"),
                         dbProps.getProperty("db.password"));
-                System.out.println("Connected");
+                System.out.println("db connected");
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             } catch (IOException e) {
