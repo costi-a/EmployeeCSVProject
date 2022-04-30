@@ -88,7 +88,4 @@ public class EmployeeDAO{
         }
         return false;
     }
-    public boolean updateEmployee(Employee newEmployeeState){
-        return false;
-    }
 }

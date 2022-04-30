@@ -8,7 +8,7 @@ public class Starter {
         try {
             Manager m = new Manager();
             m.manageProgram("EmployeeRecords.csv");
-            m.manageProgram("EmployeeRecordsLarge.csv");
+            // m.manageProgram("EmployeeRecordsLarge.csv");
         } catch (Exception e) {
             e.printStackTrace();
         }
