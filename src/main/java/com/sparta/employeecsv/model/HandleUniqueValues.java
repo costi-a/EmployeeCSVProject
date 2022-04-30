@@ -2,6 +2,7 @@ package com.sparta.employeecsv.model;
 
 import java.util.LinkedList;
 import java.util.Map;
+import java.util.Objects;
 
 public class HandleUniqueValues {
     public int calculateUniqueIds(Map<String, Integer> mapIds) {
@@ -35,7 +36,7 @@ public class HandleUniqueValues {
                 // looping into hashmap ids with duplicates and declaring id
                 for(String id: mapIds.keySet()) {
                     // if id it's unique we save the employee into another list
-                    if(employee.getEmployeeID().equals(id) && mapIds.get(id) == 1) {
+                    if(Objects.equals(employee.getEmployeeID(), id) && mapIds.get(id) == 1) {
                         uniqueEmployees.add(employee);
                     }
                 }

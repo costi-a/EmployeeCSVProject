@@ -104,6 +104,34 @@ public class DatabaseDriver {
         }
     }
 
+    public void populateTableMultiList(LinkedList<LinkedList<Employee>> splitEmployeeList) {
+        //for each employee in the list get their details and add it to the database
+        try (PreparedStatement ps = connection.prepareStatement(getInsertMultiListSQL())) {
+            for (LinkedList<Employee> employeeSubList : splitEmployeeList) {
+
+                for (int i = 0; i < employeeSubList.size(); i++) {
+
+                    Employee employee = employeeSubList.get(i);
+
+                    ps.setString(1, employee.getEmployeeID());
+                    ps.setString(2, employee.getNamePrefix());
+                    ps.setString(3, employee.getFirstName());
+                    ps.setString(4, employee.getMiddleInitial().toString());
+                    ps.setString(5, employee.getLastName());
+                    ps.setString(6, employee.getGender().toString());
+                    ps.setString(7, employee.getEmailAddress());
+                    ps.setDate(8, employee.getDateOfBirth());
+                    ps.setDate(9, employee.getDateOfJoining());
+                    ps.setFloat(10, employee.getSalary());
+                }
+                ps.executeUpdate();
+            }
+            System.out.println("EMPLOYEE_RECORDS updated correctly");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     public void clearDuplicateTable()    {
         //drop the table from the database
         String drop = "DROP TABLE IF EXISTS EMPLOYEE_DUP_RECORDS";
@@ -149,5 +177,18 @@ public class DatabaseDriver {
             e.printStackTrace();
         }
         return sqlProps.getProperty("db.sql-insert");
+    }
+
+    private String getInsertMultiListSQL() {
+        //get the sql insert property from the properties file
+        Properties sqlProps = new Properties();
+        try {
+            sqlProps.load(new FileReader("sql.properties"));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return sqlProps.getProperty("db.sql-insert-multi-list");
     }
 }
