@@ -1,6 +1,6 @@
 package com.sparta.employeecsv.model.test;
 
-import com.sparta.employeecsv.model.HandleDuplicates;
+import controller.HandleDuplicates;
 import org.junit.jupiter.api.*;
 
 import java.util.Arrays;
