@@ -148,7 +148,7 @@ public class Manager {
             dInfo.printTimeTaken(durationThreads);
 
             // stopping the program in order to let the user read info
-            TimeUnit.SECONDS.sleep(5);
+            TimeUnit.SECONDS.sleep(15);
 
         } catch (Exception e) {
             e.printStackTrace();

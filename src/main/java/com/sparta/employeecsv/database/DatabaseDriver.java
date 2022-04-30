@@ -131,7 +131,7 @@ public class DatabaseDriver {
     // populate large dup table
     public void populateThreadTableDuplicateEmployee(List<Employee> employeeList) {
         //for each employee in the list get their details and add it to the database
-        try (PreparedStatement ps = connection.prepareStatement(getInsertDuplicatesSQL())) {
+        try (PreparedStatement ps = connection.prepareStatement(getInsertThreadDuplicatesSQL())) {
             for (Employee employee : employeeList) {
                 ps.setString(1, employee.getEmployeeID());
                 ps.setString(2, employee.getNamePrefix());
