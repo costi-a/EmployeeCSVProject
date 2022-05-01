@@ -131,16 +131,16 @@ public class Manager {
             // only if there are null/duplicates
             Thread thread7 = null;
             Thread thread8 = null;
-            Thread thread9 = null;
-            Thread thread10 = null;
-            Thread thread11 = null;
-            Thread thread12 = null;
+            // Thread thread9 = null;
+            // Thread thread10 = null;
+            // Thread thread11 = null;
+            // Thread thread12 = null;
             Thread thread13 = null;
             Thread thread14 = null;
-            Thread thread15 = null;
-            Thread thread16 = null;
-            Thread thread17 = null;
-            Thread thread18 = null;
+            // Thread thread15 = null;
+            // Thread thread16 = null;
+            // Thread thread17 = null;
+            // Thread thread18 = null;
 
             // handling duplicate values
             if(duplicateIdsInt > 0) {
