@@ -6,7 +6,7 @@ import com.sparta.employeecsv.model.Employee;
 import java.util.List;
 
 public class ThreadManagerDuplicateValues implements Runnable {
-    private List<Employee> listSplitted;
+    private final List<Employee> listSplitted;
 
     public ThreadManagerDuplicateValues(List<Employee> listSplitted) {
         this.listSplitted = listSplitted;

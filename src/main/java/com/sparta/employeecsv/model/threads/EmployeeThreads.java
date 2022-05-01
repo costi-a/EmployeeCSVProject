@@ -11,10 +11,10 @@ import java.util.LinkedList;
 public class EmployeeThreads implements Runnable    {
 
     private static LinkedList<Employee> employees;
-    private  Connection connection;
+    private final Connection connection;
 
     public EmployeeThreads(LinkedList<Employee> employees) {
-        this.employees = employees;
+        EmployeeThreads.employees = employees;
         this.connection = ConnectionFactory.getConnection();
     }
 

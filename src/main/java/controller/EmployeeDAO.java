@@ -7,7 +7,7 @@ import java.sql.*;
 import java.util.ArrayList;
 
 public class EmployeeDAO{
-    private Connection connection;
+    private final Connection connection;
 
     public EmployeeDAO() {
         this.connection = ConnectionFactory.getConnection();

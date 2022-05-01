@@ -55,7 +55,7 @@ public class LargeThreadTest {
         tm.runThreads();
 
         ConnectionFactory cf = new ConnectionFactory();
-        cf.closeConnection();
+        ConnectionFactory.closeConnection();
 
     }
 }
