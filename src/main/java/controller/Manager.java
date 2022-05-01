@@ -76,19 +76,23 @@ public class Manager {
             // populating the table with unique ids employees
             dbDriver.populateTableUniqueEmployee(uniqueEmployees);
 
-            // dropping, creating table duplicate employee
-            dbDriver.clearDuplicateTable();
-            dbDriver.createTableDuplicatesEmployee();
+            if(duplicatesEmployees.size() > 0) {
+                // dropping, creating table duplicate employee
+                dbDriver.clearDuplicateTable();
+                dbDriver.createTableDuplicatesEmployee();
 
-            // populating the table with duplicate ids employees
-            dbDriver.populateTableDuplicateEmployee(duplicatesEmployees);
+                // populating the table with duplicate ids employees
+                dbDriver.populateTableDuplicateEmployee(duplicatesEmployees);
+            }
 
-            // dropping, creating table null employee
-            dbDriver.clearNullTable();
-            dbDriver.createTableNullEmployee();
+            if(employeesNullValues.size() > 0) {
+                // dropping, creating table null employee
+                dbDriver.clearNullTable();
+                dbDriver.createTableNullEmployee();
 
-            // populating the table with null values employees
-            dbDriver.populateTableNullEmployee(employeesNullValues);
+                // populating the table with null values employees
+                dbDriver.populateTableNullEmployee(employeesNullValues);
+            }
 
             // calculating time taken
             long duration = ct.calculateEndTime(startTimeSeconds);
@@ -114,7 +118,7 @@ public class Manager {
             System.out.println("using threads...");
             TimeUnit.SECONDS.sleep(3);
 
-            // splitting list into 4 lists
+            // splitting unique list into 4 lists
             if(uniqueEmployees.size() < 10000) {
                 splittedListUniqueValidValues = sp.splitList(3000, uniqueEmployees);
             } else {
@@ -135,6 +139,7 @@ public class Manager {
             // handling duplicate values
             if(duplicateIdsInt > 0) {
                 if(duplicatesEmployees.size() < 120) {
+                    // splitting in 4 lists
                     splittedListDuplicateValidValues =
                             sp.splitList(30, duplicatesEmployees);
                 } else {
@@ -155,7 +160,7 @@ public class Manager {
                 ThreadManagerDuplicateValues tm8 = new ThreadManagerDuplicateValues
                         (splittedListDuplicateValidValues.get(3));
 
-                // creating thread
+                // creating thread dup values
                 thread5 = new Thread(tm5);
                 thread6 = new Thread(tm6);
                 thread7 = new Thread(tm7);
@@ -168,10 +173,11 @@ public class Manager {
             }
 
             if(employeesNullValues.size() > 0) {
+                // splitting in 4 lists
                 splittedListNullValidValues =
-                        sp.splitList(250, employeesNullValues);
+                        sp.splitList(300, employeesNullValues);
 
-                // dropping, creating table duplicate employee tables
+                // dropping, creating table null employee tables
                 dbDriver.clearThreadNullTable();
                 dbDriver.createThreadTableNullEmployee();
 
@@ -184,7 +190,7 @@ public class Manager {
                 ThreadManagerNullValues tm12 = new ThreadManagerNullValues
                         (splittedListNullValidValues.get(3));
 
-                // creating thread
+                // creating thread null values
                 thread9 = new Thread(tm9);
                 thread10 = new Thread(tm10);
                 thread11 = new Thread(tm11);
