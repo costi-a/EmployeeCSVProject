@@ -52,6 +52,10 @@ public class DatabaseDriver {
         }
     }
 
+    public void loadPropertiesFile(Properties sqlProps) throws IOException {
+        sqlProps.load(new FileReader("sql.properties"));
+    }
+
     public void createTableUniqueEmployee() {
         try {
             //create the employee list table in the database
@@ -192,7 +196,7 @@ public class DatabaseDriver {
         try (PreparedStatement ps = connection.prepareStatement(getInsertMultiListSQL())) {
             populateData(ps, employeeList);
             System.out.println("THREAD_EMPLOYEE_RECORDS updated correctly");
-        } catch (SQLException e) {
+        } catch (SQLException | IOException e) {
             e.printStackTrace();
         }
     }
@@ -266,7 +270,7 @@ public class DatabaseDriver {
     private String getInsertNullSQL() {
         Properties sqlProps = new Properties();
         try {
-            sqlProps.load(new FileReader("sql.properties"));
+            loadPropertiesFile(sqlProps);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -278,7 +282,7 @@ public class DatabaseDriver {
     private String getInsertThreadNullSQL() {
         Properties sqlProps = new Properties();
         try {
-            sqlProps.load(new FileReader("sql.properties"));
+            loadPropertiesFile(sqlProps);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -290,7 +294,7 @@ public class DatabaseDriver {
     private String getInsertDuplicatesSQL() {
         Properties sqlProps = new Properties();
         try {
-            sqlProps.load(new FileReader("sql.properties"));
+            loadPropertiesFile(sqlProps);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -302,7 +306,7 @@ public class DatabaseDriver {
     private String getInsertThreadDuplicatesSQL() {
         Properties sqlProps = new Properties();
         try {
-            sqlProps.load(new FileReader("sql.properties"));
+            loadPropertiesFile(sqlProps);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -315,7 +319,7 @@ public class DatabaseDriver {
         //get the sql insert property from the properties file
         Properties sqlProps = new Properties();
         try {
-            sqlProps.load(new FileReader("sql.properties"));
+            loadPropertiesFile(sqlProps);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -324,14 +328,12 @@ public class DatabaseDriver {
         return sqlProps.getProperty("db.sql-insert");
     }
 
-    private String getInsertMultiListSQL() {
+    private String getInsertMultiListSQL() throws IOException {
         //get the sql insert property from the properties file
         Properties sqlProps = new Properties();
         try {
-            sqlProps.load(new FileReader("sql.properties"));
+            loadPropertiesFile(sqlProps);
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
             e.printStackTrace();
         }
         return sqlProps.getProperty("db.sql-insert-thread");

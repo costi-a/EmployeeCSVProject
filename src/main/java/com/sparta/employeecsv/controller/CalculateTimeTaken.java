@@ -1,4 +1,4 @@
-package controller;
+package com.sparta.employeecsv.controller;
 
 public class CalculateTimeTaken {
     public long calculateStartTime() {

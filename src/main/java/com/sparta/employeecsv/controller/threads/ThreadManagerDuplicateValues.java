@@ -1,4 +1,4 @@
-package controller.threads;
+package com.sparta.employeecsv.controller.threads;
 
 import com.sparta.employeecsv.database.DatabaseDriver;
 import com.sparta.employeecsv.model.Employee;

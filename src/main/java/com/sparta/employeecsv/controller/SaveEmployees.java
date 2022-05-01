@@ -1,4 +1,4 @@
-package controller;
+package com.sparta.employeecsv.controller;
 
 import com.sparta.employeecsv.model.Employee;
 
@@ -36,6 +36,29 @@ public class SaveEmployees {
         }
     }
 
+    // this function will be used on order to see if employee has a null value
+    public boolean invalidData(Employee employee) {
+        boolean invalid = false;
+
+        boolean invalidData = employee.getEmployeeID() == null ||
+                employee.getNamePrefix() == null ||
+                employee.getFirstName() == null ||
+                employee.getMiddleInitial() == null ||
+                employee.getLastName() == null ||
+                employee.getGender() == null ||
+                employee.getEmailAddress() == null ||
+                employee.getDateOfBirth() == null ||
+                employee.getDateOfJoining() == null ||
+                employee.getSalary() == null;
+
+        if(invalidData) {
+            invalid = true;
+        } else {
+            invalid = false;
+        }
+        return invalid;
+    }
+
     public List storeEmployeesNullValues(LinkedList<Employee> employeesList) {
         // list where all the employees with null values will be added
         List<Employee> employeesNullList = new ArrayList<>();
@@ -45,17 +68,7 @@ public class SaveEmployees {
             for(int i = 0; i < employeesList.size(); i++) {
                 Employee employee = employeesList.get(i);
 
-                boolean invalidData = employee.getEmployeeID() == null ||
-                        employee.getNamePrefix() == null ||
-                        employee.getFirstName() == null ||
-                        employee.getMiddleInitial() == null ||
-                        employee.getLastName() == null ||
-                        employee.getGender() == null ||
-                        employee.getEmailAddress() == null ||
-                        employee.getDateOfBirth() == null ||
-                        employee.getDateOfJoining() == null ||
-                        employee.getSalary() == null;
-
+                boolean invalidData = invalidData(employee);
                 if(invalidData) {
                     employeesNullList.add(employee);
                 }
@@ -75,17 +88,7 @@ public class SaveEmployees {
             for(int i = 0; i < employeesList.size(); i++) {
                 Employee employee = employeesList.get(i);
 
-                boolean invalidData = employee.getEmployeeID() == null ||
-                        employee.getNamePrefix() == null ||
-                        employee.getFirstName() == null ||
-                        employee.getMiddleInitial() == null ||
-                        employee.getLastName() == null ||
-                        employee.getGender() == null ||
-                        employee.getEmailAddress() == null ||
-                        employee.getDateOfBirth() == null ||
-                        employee.getDateOfJoining() == null ||
-                        employee.getSalary() == null;
-
+                boolean invalidData = invalidData(employee);
                 if(!invalidData) {
                     employeesValidList.add(employee);
                 }

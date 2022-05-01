@@ -1,7 +1,5 @@
 package com.sparta.employeecsv.start;
-import controller.Manager;
-
-import java.util.concurrent.TimeUnit;
+import com.sparta.employeecsv.controller.Manager;
 
 public class Starter {
     public static void main(String... args)  {

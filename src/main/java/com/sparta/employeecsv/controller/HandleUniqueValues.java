@@ -1,16 +1,15 @@
-package controller;
+package com.sparta.employeecsv.controller;
 
 import com.sparta.employeecsv.model.Employee;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class HandleUniqueValues {
     public int calculateUniqueIds(Map<String, Integer> mapIds) {
         // here we will count the ids with value of 1
         int counter = 0;
 
-        try { /*
+        try { /* takes around 0 seconds
             // if key (id) as a value of 1 we increase the counter
             for(String id: mapIds.keySet()) {
                 if(mapIds.get(id) == 1) {
@@ -18,12 +17,17 @@ public class HandleUniqueValues {
                 }
             } */
 
+            // long start = System.nanoTime() / 1000000000;
+            // takes around 0 seconds
             Set<Map.Entry<String, Integer>> entries = mapIds.entrySet();
             List uniqueIds = entries.stream()
                     // if key (id) as a value of 1 save into uniqueIds
                     .filter(id -> id.getValue() == 1)
                     .toList();
             counter = uniqueIds.size();
+            // long finish = System.nanoTime() / 1000000000;
+            // long duration = finish - start;
+            // System.out.println("calculateUniqueIds " + duration);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -52,6 +56,7 @@ public class HandleUniqueValues {
             }
 
             /* takes around 264 seconds
+            long start = System.nanoTime() / 1000000000;
             Set<Map.Entry<String, Integer>> entries = mapIds.entrySet();
             entries.stream()
                     .filter(id -> id.getValue() == 1)
@@ -61,7 +66,11 @@ public class HandleUniqueValues {
                                 .forEach(employee -> {
                                     uniqueEmployees.add(employee);
                                 });
-                    }); */
+                    });
+            long finish = System.nanoTime() / 1000000000;
+            long duration = finish - start;
+            System.out.println("storeIds " + duration);
+            */
         } catch (Exception e) {
             e.printStackTrace();
         }
