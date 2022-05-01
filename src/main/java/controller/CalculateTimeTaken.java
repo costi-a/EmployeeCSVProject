@@ -2,24 +2,26 @@ package controller;
 
 public class CalculateTimeTaken {
     public long calculateStartTime() {
+        long startTimeSeconds = 0;
+
         try {
             System.out.println("timer started");
-            long startTimeSeconds = System.currentTimeMillis() / 1000;
-            return startTimeSeconds;
+            startTimeSeconds = System.nanoTime() / 1000000000;
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return 0;
+        return startTimeSeconds;
     }
 
     public long calculateEndTime(long startTimeSeconds) {
+        long duration = 0;
+
         try {
-            long endTimeSeconds = System.currentTimeMillis() / 1000;
-            long duration = endTimeSeconds - startTimeSeconds;
-            return duration;
+            long endTimeSeconds = System.nanoTime() / 1000000000;
+            duration = endTimeSeconds - startTimeSeconds;
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return 0;
+        return duration;
     }
 }

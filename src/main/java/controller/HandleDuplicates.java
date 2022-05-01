@@ -8,14 +8,13 @@ import java.util.Map;
 import java.util.Set;
 
 public class HandleDuplicates {
-    public Map<String, Integer> returnHashMapIds(LinkedList<String> ids) {
+    public Map<String, Integer> getIdsCounter(LinkedList<String> ids) {
         // setting an hasmap so that we can count the the ids
         Map<String, Integer> mapIds = new HashMap<>();
 
         try {
             // if id doesn't exists we put into the hashmap the id as a key and the value 1
             // if id exists we just increase the value by 1
-
             for(String id: ids) {
                 if(mapIds.containsKey(id)) {
                     mapIds.put(id, mapIds.get(id) + 1);
@@ -67,10 +66,12 @@ public class HandleDuplicates {
                         duplicatesNumbers.add(id.getValue());
                     });
 
-            // adding each value of duplicateNumbers to each other
-            sum = duplicatesNumbers.stream()
-                    .reduce((a, b) -> a + b)
-                    .get();
+            if(duplicatesNumbers.size() > 0) {
+                // adding each value of duplicateNumbers to each other
+                sum = duplicatesNumbers.stream()
+                        .reduce((a, b) -> a + b)
+                        .get();
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }

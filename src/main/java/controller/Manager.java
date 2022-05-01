@@ -1,12 +1,12 @@
 package controller;
-import com.sparta.employeecsv.database.ConnectionFactory;
 import com.sparta.employeecsv.database.DatabaseDriver;
 import com.sparta.employeecsv.display.DisplayInfo;
 import com.sparta.employeecsv.model.Employee;
-import controller.threads.ThreadManager;
+import controller.threads.ThreadManagerDuplicateValues;
+import controller.threads.ThreadManagerNullValues;
+import controller.threads.ThreadManagerUniqueValues;
 
 import java.io.BufferedReader;
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -24,14 +24,20 @@ public class Manager {
             SaveEmployees saveEmployees = new SaveEmployees();
             LinkedList<Employee> employeesList = saveEmployees.saveEmployees(br);
 
+            // storing employees into 2 lists, one with valid values and the other with null values
+            List<Employee> employeesNullValues =
+                    saveEmployees.storeEmployeesNullValues(employeesList);
+            LinkedList<Employee> employeesValidValues =
+                    saveEmployees.storeEmployeesValidValues(employeesList);
+
             // storing ids that we will use with the HandleDuplicates
             StoringIds sIds = new StoringIds();
-            LinkedList<String> ids = sIds.storeIds(employeesList);
+            LinkedList<String> ids = sIds.storeIds(employeesValidValues);
             HandleDuplicates hd = new HandleDuplicates();
             // we first return an hashmap so that we have something like this:
             // {a: 1, b: 3, c: 5} (a: 1 means there is only 1 a, b: 3 means there are 3 b)
             // so that we can check duplicates and unique values
-            Map<String, Integer> mapIds = hd.returnHashMapIds(ids);
+            Map<String, Integer> mapIds = hd.getIdsCounter(ids);
             // counting duplicates
             int duplicateIdsInt = hd.calculateSumDuplicates(mapIds);
 
@@ -40,7 +46,7 @@ public class Manager {
 
             // returning a list of duplicate ids
             LinkedList<Employee> duplicatesEmployees = hd.returnDuplicatesEmployees(duplicatesIds,
-                    employeesList);
+                    employeesValidValues);
 
             // calculating unique values
             HandleUniqueValues uniqueValues = new HandleUniqueValues();
@@ -48,11 +54,13 @@ public class Manager {
 
             // displaying the info
             DisplayInfo dInfo = new DisplayInfo();
-            dInfo.printResults(duplicateIdsInt, uniqueIds, employeesList);
+            int nullValues = employeesNullValues.size();
 
             // calculating an employee list with unique ids
-            List<Employee> uniqueEmployees = uniqueValues.returnUniqueEmployees(employeesList,
-                    mapIds);
+            LinkedList<Employee> uniqueEmployees = uniqueValues.returnUniqueEmployees(
+                    employeesValidValues, mapIds);
+
+            dInfo.printResults(duplicateIdsInt, uniqueIds, uniqueEmployees, nullValues);
 
             // dropping and creating table
             DatabaseDriver dbDriver = new DatabaseDriver();
@@ -61,19 +69,30 @@ public class Manager {
             CalculateTimeTaken ct = new CalculateTimeTaken();
             long startTimeSeconds = ct.calculateStartTime();
 
-            // dropping, creating table unique employee tables
+            // dropping, creating table unique employee
             dbDriver.clearUniqueTable();
             dbDriver.createTableUniqueEmployee();
 
             // populating the table with unique ids employees
             dbDriver.populateTableUniqueEmployee(uniqueEmployees);
 
-            // dropping, creating table duplicate employee tables
-            dbDriver.clearDuplicateTable();
-            dbDriver.createTableDuplicatesEmployee();
+            if(duplicatesEmployees.size() > 0) {
+                // dropping, creating table duplicate employee
+                dbDriver.clearDuplicateTable();
+                dbDriver.createTableDuplicatesEmployee();
 
-            // populating the table with duplicate ids employees
-            dbDriver.populateTableDuplicateEmployee(duplicatesEmployees);
+                // populating the table with duplicate ids employees
+                dbDriver.populateTableDuplicateEmployee(duplicatesEmployees);
+            }
+
+            if(employeesNullValues.size() > 0) {
+                // dropping, creating table null employee
+                dbDriver.clearNullTable();
+                dbDriver.createTableNullEmployee();
+
+                // populating the table with null values employees
+                dbDriver.populateTableNullEmployee(employeesNullValues);
+            }
 
             // calculating time taken
             long duration = ct.calculateEndTime(startTimeSeconds);
@@ -92,22 +111,106 @@ public class Manager {
 
             // splitting threads into multiple lists
             SplitListIntoMultipleLists sp = new SplitListIntoMultipleLists();
-            List<List<Employee>> splittedList = new ArrayList<>();
-
-            if(uniqueEmployees.size() < 10000) {
-                splittedList = sp.splitList(3000, uniqueEmployees);
-            } else {
-                splittedList = sp.splitList(17000, uniqueEmployees);
-            }
+            List<List<Employee>> splittedListUniqueValidValues;
+            List<List<Employee>> splittedListDuplicateValidValues;
+            List<List<Employee>> splittedListNullValidValues;
 
             System.out.println("using threads...");
             TimeUnit.SECONDS.sleep(3);
 
-            // creating thread manager
-            ThreadManager tm1 = new ThreadManager(splittedList.get(0));
-            ThreadManager tm2 = new ThreadManager(splittedList.get(1));
-            ThreadManager tm3 = new ThreadManager(splittedList.get(2));
-            ThreadManager tm4 = new ThreadManager(splittedList.get(3));
+            // splitting unique list into 4 lists
+            if(uniqueEmployees.size() < 10000) {
+                splittedListUniqueValidValues = sp.splitList(3000, uniqueEmployees);
+            } else {
+                splittedListUniqueValidValues = sp.splitList(17000, uniqueEmployees);
+            }
+
+            // creating thread with value null so that we can create, start and join them
+            // only if there are duplicates
+            Thread thread5 = null;
+            Thread thread6 = null;
+            Thread thread7 = null;
+            Thread thread8 = null;
+            Thread thread9 = null;
+            Thread thread10 = null;
+            Thread thread11 = null;
+            Thread thread12 = null;
+
+            // handling duplicate values
+            if(duplicateIdsInt > 0) {
+                if(duplicatesEmployees.size() < 120) {
+                    // splitting in 4 lists
+                    splittedListDuplicateValidValues =
+                            sp.splitList(30, duplicatesEmployees);
+                } else {
+                    splittedListDuplicateValidValues =
+                            sp.splitList(17000, duplicatesEmployees);
+                }
+
+                // dropping, creating table duplicate employee tables
+                dbDriver.clearThreadDuplicateTable();
+                dbDriver.createThreadTableDuplicatesEmployee();
+
+                ThreadManagerDuplicateValues tm5 = new ThreadManagerDuplicateValues
+                        (splittedListDuplicateValidValues.get(0));
+                ThreadManagerDuplicateValues tm6 = new ThreadManagerDuplicateValues
+                        (splittedListDuplicateValidValues.get(1));
+                ThreadManagerDuplicateValues tm7 = new ThreadManagerDuplicateValues
+                        (splittedListDuplicateValidValues.get(2));
+                ThreadManagerDuplicateValues tm8 = new ThreadManagerDuplicateValues
+                        (splittedListDuplicateValidValues.get(3));
+
+                // creating thread dup values
+                thread5 = new Thread(tm5);
+                thread6 = new Thread(tm6);
+                thread7 = new Thread(tm7);
+                thread8 = new Thread(tm8);
+
+                thread5.start();
+                thread6.start();
+                thread7.start();
+                thread8.start();
+            }
+
+            if(employeesNullValues.size() > 0) {
+                // splitting in 4 lists
+                splittedListNullValidValues =
+                        sp.splitList(300, employeesNullValues);
+
+                // dropping, creating table null employee tables
+                dbDriver.clearThreadNullTable();
+                dbDriver.createThreadTableNullEmployee();
+
+                ThreadManagerNullValues tm9 = new ThreadManagerNullValues
+                        (splittedListNullValidValues.get(0));
+                ThreadManagerNullValues tm10 = new ThreadManagerNullValues
+                        (splittedListNullValidValues.get(1));
+                ThreadManagerNullValues tm11 = new ThreadManagerNullValues
+                        (splittedListNullValidValues.get(2));
+                ThreadManagerNullValues tm12 = new ThreadManagerNullValues
+                        (splittedListNullValidValues.get(3));
+
+                // creating thread null values
+                thread9 = new Thread(tm9);
+                thread10 = new Thread(tm10);
+                thread11 = new Thread(tm11);
+                thread12 = new Thread(tm12);
+
+                thread9.start();
+                thread10.start();
+                thread11.start();
+                thread12.start();
+            }
+
+            // creating thread manager unique values
+            ThreadManagerUniqueValues tm1 = new ThreadManagerUniqueValues
+                    (splittedListUniqueValidValues.get(0));
+            ThreadManagerUniqueValues tm2 = new ThreadManagerUniqueValues
+                    (splittedListUniqueValidValues.get(1));
+            ThreadManagerUniqueValues tm3 = new ThreadManagerUniqueValues
+                    (splittedListUniqueValidValues.get(2));
+            ThreadManagerUniqueValues tm4 = new ThreadManagerUniqueValues
+                    (splittedListUniqueValidValues.get(3));
 
             // creating thread
             Thread thread1 = new Thread(tm1);
@@ -122,34 +225,40 @@ public class Manager {
             dbDriver.clearThreadUniqueTable();
             dbDriver.createThreadTableUniqueEmployee();
 
-            if(duplicateIdsInt > 0) {
-                // dropping, creating table duplicate employee tables
-                dbDriver.clearThreadDuplicateTable();
-                dbDriver.createThreadTableDuplicatesEmployee();
-
-                // populating the table with duplicate ids employees
-                dbDriver.populateThreadTableDuplicateEmployee(duplicatesEmployees);
-            }
-
             // starting threads
             thread1.start();
             thread2.start();
             thread3.start();
             thread4.start();
 
+            // waiting for threads to finish so that we can calculate the time taken
             thread1.join();
             thread2.join();
             thread3.join();
             thread4.join();
 
+            // if thread 5 is null also 6-7-8 are
+            if(thread5 != null) {
+                // waiting for threads to finish so that we can calculate the time taken
+                thread5.join();
+                thread6.join();
+                thread7.join();
+                thread8.join();
+            }
+
+            // if thread 9 is null also 6-7-8 are
+            if(thread9 != null) {
+                // waiting for threads to finish so that we can calculate the time taken
+                thread9.join();
+                thread10.join();
+                thread11.join();
+                thread12.join();
+            }
+
             long durationThreads = ct.calculateEndTime(startTimeThreads);
 
             // printing time taken
             dInfo.printTimeTaken(durationThreads);
-
-            // stopping the program in order to let the user read info
-            TimeUnit.SECONDS.sleep(15);
-
         } catch (Exception e) {
             e.printStackTrace();
         }
