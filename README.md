@@ -37,4 +37,8 @@ there is no much difference having 4-5 or 6 threads
 The main difference between the loops and Lambdas
 is the **returnUniqueEmployees**, the loop takes
 around 75 seconds (**large** file) to get
-compiled while the Lambda expression 264 seconds.
+compiled while the Lambdas expression 264 seconds (
+all the other methods get compiled between 0 and 2 seconds 
+for both loop and Lambdas).
+
+All the timing was registered on the large file.
