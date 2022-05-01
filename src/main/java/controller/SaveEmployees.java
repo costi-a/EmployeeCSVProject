@@ -45,7 +45,6 @@ public class SaveEmployees {
             for(int i = 0; i < employeesList.size(); i++) {
                 Employee employee = employeesList.get(i);
 
-                // if one of data is null we don't add it to the list
                 boolean invalidData = employee.getEmployeeID() == null ||
                         employee.getNamePrefix() == null ||
                         employee.getFirstName() == null ||
@@ -76,7 +75,6 @@ public class SaveEmployees {
             for(int i = 0; i < employeesList.size(); i++) {
                 Employee employee = employeesList.get(i);
 
-                // if one of data is null we don't add it to the list
                 boolean invalidData = employee.getEmployeeID() == null ||
                         employee.getNamePrefix() == null ||
                         employee.getFirstName() == null ||

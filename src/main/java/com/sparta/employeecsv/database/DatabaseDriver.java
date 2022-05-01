@@ -15,20 +15,48 @@ public class DatabaseDriver {
         connection = ConnectionFactory.getConnection();
     }
 
+    // this function will be used to create tables
+    public String createTables() {
+        StringBuilder str = new StringBuilder();
+        str.append("EmployeeID VARCHAR(6),");
+        str.append("NamePrefix VARCHAR(6),");
+        str.append("FirstName VARCHAR(25),");
+        str.append("MiddleInitial CHAR(1),");
+        str.append("LastName VARCHAR(25),");
+        str.append("Gender CHAR(1),");
+        str.append("Email VARCHAR(50),");
+        str.append("DateOfBirth DATE,");
+        str.append("DateOfJoining DATE,");
+        str.append("Salary DECIMAL(10,2)");
+        return str.toString();
+    }
+
+    // this function will be used to populate data
+    public void populateData(PreparedStatement ps, List<Employee> employeeList) {
+        try {
+            for(Employee employee: employeeList) {
+                ps.setString(1, employee.getEmployeeID());
+                ps.setString(2, employee.getNamePrefix());
+                ps.setString(3, employee.getFirstName());
+                ps.setString(4, employee.getMiddleInitial().toString());
+                ps.setString(5, employee.getLastName());
+                ps.setString(6, employee.getGender().toString());
+                ps.setString(7, employee.getEmailAddress());
+                ps.setDate(8, employee.getDateOfBirth());
+                ps.setDate(9, employee.getDateOfJoining());
+                ps.setFloat(10, employee.getSalary());
+                ps.executeUpdate();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     public void createTableUniqueEmployee() {
         try {
             //create the employee list table in the database
             String createTable = "CREATE TABLE EMPLOYEE_RECORDS (" +
-                    "EmployeeID VARCHAR(6)," +
-                    "NamePrefix VARCHAR(6)," +
-                    "FirstName VARCHAR(25)," +
-                    "MiddleInitial CHAR(1)," +
-                    "LastName VARCHAR(25)," +
-                    "Gender CHAR(1)," +
-                    "Email VARCHAR(50)," +
-                    "DateOfBirth DATE," +
-                    "DateOfJoining DATE," +
-                    "Salary DECIMAL(10,2)," +
+                    createTables() + "," +
                     "PRIMARY KEY (EmployeeID)" +
                     ");";
             Statement st = connection.createStatement();
@@ -42,16 +70,7 @@ public class DatabaseDriver {
         try {
             //create the employee list table in the database
             String createTable = "CREATE TABLE NULL_EMPLOYEE_RECORDS (" +
-                    "EmployeeID VARCHAR(6)," +
-                    "NamePrefix VARCHAR(6)," +
-                    "FirstName VARCHAR(25)," +
-                    "MiddleInitial CHAR(1)," +
-                    "LastName VARCHAR(25)," +
-                    "Gender CHAR(1)," +
-                    "Email VARCHAR(50)," +
-                    "DateOfBirth DATE," +
-                    "DateOfJoining DATE," +
-                    "Salary DECIMAL(10,2)," +
+                    createTables() + "," +
                     "`idNULL_EMPLOYEE_RECORDS` INT NOT NULL AUTO_INCREMENT,\n" +
                     "PRIMARY KEY (`idNULL_EMPLOYEE_RECORDS`)" +
                     ");";
@@ -66,16 +85,7 @@ public class DatabaseDriver {
         try {
             //create the employee list table in the database
             String createTable = "CREATE TABLE THREAD_NULL_EMPLOYEE_RECORDS (" +
-                    "EmployeeID VARCHAR(6)," +
-                    "NamePrefix VARCHAR(6)," +
-                    "FirstName VARCHAR(25)," +
-                    "MiddleInitial CHAR(1)," +
-                    "LastName VARCHAR(25)," +
-                    "Gender CHAR(1)," +
-                    "Email VARCHAR(50)," +
-                    "DateOfBirth DATE," +
-                    "DateOfJoining DATE," +
-                    "Salary DECIMAL(10,2)," +
+                    createTables() + "," +
                     "`idTHREAD_NULL_EMPLOYEE_RECORDS` INT NOT NULL AUTO_INCREMENT,\n" +
                     "PRIMARY KEY (`idTHREAD_NULL_EMPLOYEE_RECORDS`)" +
                     ");";
@@ -91,16 +101,7 @@ public class DatabaseDriver {
         try {
             //create the employee list table in the database
             String createThreadTable = "CREATE TABLE THREAD_EMPLOYEE_RECORDS (" +
-                    "EmployeeID VARCHAR(6)," +
-                    "NamePrefix VARCHAR(6)," +
-                    "FirstName VARCHAR(25)," +
-                    "MiddleInitial CHAR(1)," +
-                    "LastName VARCHAR(25)," +
-                    "Gender CHAR(1)," +
-                    "Email VARCHAR(50)," +
-                    "DateOfBirth DATE," +
-                    "DateOfJoining DATE," +
-                    "Salary DECIMAL(10,2)," +
+                    createTables() + "," +
                     "PRIMARY KEY (EmployeeID)" +
                     ");";
             Statement st = connection.createStatement();
@@ -114,17 +115,7 @@ public class DatabaseDriver {
         try {
             //create the employee list table in the database
             String createDupTable = "CREATE TABLE EMPLOYEE_DUP_RECORDS (" +
-                    "EmployeeID VARCHAR(6)," +
-                    "NamePrefix VARCHAR(6)," +
-                    "FirstName VARCHAR(25)," +
-                    "MiddleInitial CHAR(1)," +
-                    "LastName VARCHAR(25)," +
-                    "Gender CHAR(1)," +
-                    "Email VARCHAR(50)," +
-                    "DateOfBirth DATE," +
-                    "DateOfJoining DATE," +
-                    "Salary DECIMAL(10,2)" +
-                    ");";
+                    createTables() + ");";
             Statement st = connection.createStatement();
             st.executeUpdate(createDupTable);
         } catch (SQLException e) {
@@ -136,17 +127,7 @@ public class DatabaseDriver {
         try {
             //create the employee list table in the database
             String createThreadDupTable = "CREATE TABLE THREAD_EMPLOYEE_DUP_RECORDS (" +
-                    "EmployeeID VARCHAR(6)," +
-                    "NamePrefix VARCHAR(6)," +
-                    "FirstName VARCHAR(25)," +
-                    "MiddleInitial CHAR(1)," +
-                    "LastName VARCHAR(25)," +
-                    "Gender CHAR(1)," +
-                    "Email VARCHAR(50)," +
-                    "DateOfBirth DATE," +
-                    "DateOfJoining DATE," +
-                    "Salary DECIMAL(10,2)" +
-                    ");";
+                    createTables() + ");";
             Statement st = connection.createStatement();
             st.executeUpdate(createThreadDupTable);
         } catch (SQLException e) {
@@ -157,19 +138,7 @@ public class DatabaseDriver {
     public void populateTableDuplicateEmployee(List<Employee> employeeList) {
         //for each employee in the list get their details and add it to the database
         try (PreparedStatement ps = connection.prepareStatement(getInsertDuplicatesSQL())) {
-            for (Employee employee : employeeList) {
-                ps.setString(1, employee.getEmployeeID());
-                ps.setString(2, employee.getNamePrefix());
-                ps.setString(3, employee.getFirstName());
-                ps.setString(4, employee.getMiddleInitial().toString());
-                ps.setString(5, employee.getLastName());
-                ps.setString(6, employee.getGender().toString());
-                ps.setString(7, employee.getEmailAddress());
-                ps.setDate(8, employee.getDateOfBirth());
-                ps.setDate(9, employee.getDateOfJoining());
-                ps.setFloat(10, employee.getSalary());
-                ps.executeUpdate();
-            }
+            populateData(ps, employeeList);
             System.out.println("EMPLOYEE_DUP_RECORDS updated correctly");
         } catch (SQLException e) {
             e.printStackTrace();
@@ -179,19 +148,7 @@ public class DatabaseDriver {
     public void populateTableNullEmployee(List<Employee> employeeList) {
         //for each employee in the list get their details and add it to the database
         try (PreparedStatement ps = connection.prepareStatement(getInsertNullSQL())) {
-            for (Employee employee : employeeList) {
-                ps.setString(1, employee.getEmployeeID());
-                ps.setString(2, employee.getNamePrefix());
-                ps.setString(3, employee.getFirstName());
-                ps.setString(4, employee.getMiddleInitial().toString());
-                ps.setString(5, employee.getLastName());
-                ps.setString(6, employee.getGender().toString());
-                ps.setString(7, employee.getEmailAddress());
-                ps.setDate(8, employee.getDateOfBirth());
-                ps.setDate(9, employee.getDateOfJoining());
-                ps.setFloat(10, employee.getSalary());
-                ps.executeUpdate();
-            }
+            populateData(ps, employeeList);
             System.out.println("NULL_EMPLOYEE_RECORDS updated correctly");
         } catch (SQLException e) {
             e.printStackTrace();
@@ -201,19 +158,7 @@ public class DatabaseDriver {
     public void populateThreadTableNullEmployee(List<Employee> employeeList) {
         //for each employee in the list get their details and add it to the database
         try (PreparedStatement ps = connection.prepareStatement(getInsertThreadNullSQL())) {
-            for (Employee employee : employeeList) {
-                ps.setString(1, employee.getEmployeeID());
-                ps.setString(2, employee.getNamePrefix());
-                ps.setString(3, employee.getFirstName());
-                ps.setString(4, employee.getMiddleInitial().toString());
-                ps.setString(5, employee.getLastName());
-                ps.setString(6, employee.getGender().toString());
-                ps.setString(7, employee.getEmailAddress());
-                ps.setDate(8, employee.getDateOfBirth());
-                ps.setDate(9, employee.getDateOfJoining());
-                ps.setFloat(10, employee.getSalary());
-                ps.executeUpdate();
-            }
+            populateData(ps, employeeList);
             System.out.println("THREAD_NULL_EMPLOYEE_RECORDS updated correctly");
         } catch (SQLException e) {
             e.printStackTrace();
@@ -224,19 +169,7 @@ public class DatabaseDriver {
     public void populateThreadTableDuplicateEmployee(List<Employee> employeeList) {
         //for each employee in the list get their details and add it to the database
         try (PreparedStatement ps = connection.prepareStatement(getInsertThreadDuplicatesSQL())) {
-            for (Employee employee : employeeList) {
-                ps.setString(1, employee.getEmployeeID());
-                ps.setString(2, employee.getNamePrefix());
-                ps.setString(3, employee.getFirstName());
-                ps.setString(4, employee.getMiddleInitial().toString());
-                ps.setString(5, employee.getLastName());
-                ps.setString(6, employee.getGender().toString());
-                ps.setString(7, employee.getEmailAddress());
-                ps.setDate(8, employee.getDateOfBirth());
-                ps.setDate(9, employee.getDateOfJoining());
-                ps.setFloat(10, employee.getSalary());
-                ps.executeUpdate();
-            }
+            populateData(ps, employeeList);
             System.out.println("THREAD_EMPLOYEE_DUP_RECORDS updated correctly");
         } catch (SQLException e) {
             e.printStackTrace();
@@ -246,19 +179,7 @@ public class DatabaseDriver {
     public void populateTableUniqueEmployee(List<Employee> employeeList) {
         //for each employee in the list get their details and add it to the database
         try (PreparedStatement ps = connection.prepareStatement(getInsertSQL())) {
-            for (Employee employee : employeeList) {
-                ps.setString(1, employee.getEmployeeID());
-                ps.setString(2, employee.getNamePrefix());
-                ps.setString(3, employee.getFirstName());
-                ps.setString(4, employee.getMiddleInitial().toString());
-                ps.setString(5, employee.getLastName());
-                ps.setString(6, employee.getGender().toString());
-                ps.setString(7, employee.getEmailAddress());
-                ps.setDate(8, employee.getDateOfBirth());
-                ps.setDate(9, employee.getDateOfJoining());
-                ps.setFloat(10, employee.getSalary());
-                ps.executeUpdate();
-            }
+            populateData(ps, employeeList);
             System.out.println("EMPLOYEE_RECORDS updated correctly");
         } catch (SQLException e) {
             e.printStackTrace();
@@ -269,19 +190,7 @@ public class DatabaseDriver {
     public void populateTableMultiList(List<Employee> employeeList) {
         //for each employee in the list get their details and add it to the database
         try (PreparedStatement ps = connection.prepareStatement(getInsertMultiListSQL())) {
-            for (Employee employee : employeeList) {
-                ps.setString(1, employee.getEmployeeID());
-                ps.setString(2, employee.getNamePrefix());
-                ps.setString(3, employee.getFirstName());
-                ps.setString(4, employee.getMiddleInitial().toString());
-                ps.setString(5, employee.getLastName());
-                ps.setString(6, employee.getGender().toString());
-                ps.setString(7, employee.getEmailAddress());
-                ps.setDate(8, employee.getDateOfBirth());
-                ps.setDate(9, employee.getDateOfJoining());
-                ps.setFloat(10, employee.getSalary());
-                ps.executeUpdate();
-            }
+            populateData(ps, employeeList);
             System.out.println("THREAD_EMPLOYEE_RECORDS updated correctly");
         } catch (SQLException e) {
             e.printStackTrace();

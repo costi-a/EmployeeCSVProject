@@ -37,7 +37,7 @@ public class Manager {
             // we first return an hashmap so that we have something like this:
             // {a: 1, b: 3, c: 5} (a: 1 means there is only 1 a, b: 3 means there are 3 b)
             // so that we can check duplicates and unique values
-            Map<String, Integer> mapIds = hd.returnHashMapIds(ids);
+            Map<String, Integer> mapIds = hd.getIdsCounter(ids);
             // counting duplicates
             int duplicateIdsInt = hd.calculateSumDuplicates(mapIds);
 
@@ -221,10 +221,6 @@ public class Manager {
             // calculating start time
             long startTimeThreads = ct.calculateStartTime();
 
-            // dropping, creating table null employee
-            dbDriver.clearThreadNullTable();
-            dbDriver.createThreadTableNullEmployee();
-
             // dropping, creating table unique employee tables
             dbDriver.clearThreadUniqueTable();
             dbDriver.createThreadTableUniqueEmployee();
@@ -263,9 +259,6 @@ public class Manager {
 
             // printing time taken
             dInfo.printTimeTaken(durationThreads);
-
-            // stopping the program in order to let the user read info
-            TimeUnit.SECONDS.sleep(10);
         } catch (Exception e) {
             e.printStackTrace();
         }
