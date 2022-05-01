@@ -30,9 +30,9 @@ public class HandleUniqueValues {
         return counter;
     }
 
-    public List<Employee> returnUniqueEmployees(LinkedList<Employee> employeesList,
+    public LinkedList<Employee> returnUniqueEmployees(LinkedList<Employee> employeesList,
                                                       Map<String, Integer> mapIds) {
-        List<Employee> uniqueEmployees = new ArrayList<>();
+        LinkedList<Employee> uniqueEmployees = new LinkedList<>();
 
         try { // takes around 75 seconds
             System.out.println("updating List<Employee> uniqueEmployees...");

@@ -67,10 +67,12 @@ public class HandleDuplicates {
                         duplicatesNumbers.add(id.getValue());
                     });
 
-            // adding each value of duplicateNumbers to each other
-            sum = duplicatesNumbers.stream()
-                    .reduce((a, b) -> a + b)
-                    .get();
+            if(duplicatesNumbers.size() > 0) {
+                // adding each value of duplicateNumbers to each other
+                sum = duplicatesNumbers.stream()
+                        .reduce((a, b) -> a + b)
+                        .get();
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -5,20 +5,21 @@ import com.sparta.employeecsv.model.Employee;
 
 import java.util.List;
 
-public class ThreadManager implements Runnable {
+public class ThreadManagerUniqueValues implements Runnable {
     private List<Employee> listSplitted;
 
-    public ThreadManager(List<Employee> listSplitted) {
+    public ThreadManagerUniqueValues(List<Employee> listSplitted) {
         this.listSplitted = listSplitted;
     }
 
-    public void insertListsLargeFile(List<Employee> listSplitted) {
+    public void populateTableWithThreads(List<Employee> listSplitted) {
+        System.out.println("populating unique table...");
         DatabaseDriver dbDriver = new DatabaseDriver();
         dbDriver.populateTableMultiList(listSplitted);
     }
 
     @Override
     public void run() {
-        insertListsLargeFile(this.listSplitted);
+        populateTableWithThreads(this.listSplitted);
     }
 }

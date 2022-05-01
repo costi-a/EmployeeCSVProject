@@ -38,6 +38,54 @@ public class DatabaseDriver {
         }
     }
 
+    public void createTableNullEmployee() {
+        try {
+            //create the employee list table in the database
+            String createTable = "CREATE TABLE NULL_EMPLOYEE_RECORDS (" +
+                    "EmployeeID VARCHAR(6)," +
+                    "NamePrefix VARCHAR(6)," +
+                    "FirstName VARCHAR(25)," +
+                    "MiddleInitial CHAR(1)," +
+                    "LastName VARCHAR(25)," +
+                    "Gender CHAR(1)," +
+                    "Email VARCHAR(50)," +
+                    "DateOfBirth DATE," +
+                    "DateOfJoining DATE," +
+                    "Salary DECIMAL(10,2)," +
+                    "`idNULL_EMPLOYEE_RECORDS` INT NOT NULL AUTO_INCREMENT,\n" +
+                    "PRIMARY KEY (`idNULL_EMPLOYEE_RECORDS`)" +
+                    ");";
+            Statement st = connection.createStatement();
+            st.executeUpdate(createTable);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void createThreadTableNullEmployee() {
+        try {
+            //create the employee list table in the database
+            String createTable = "CREATE TABLE THREAD_NULL_EMPLOYEE_RECORDS (" +
+                    "EmployeeID VARCHAR(6)," +
+                    "NamePrefix VARCHAR(6)," +
+                    "FirstName VARCHAR(25)," +
+                    "MiddleInitial CHAR(1)," +
+                    "LastName VARCHAR(25)," +
+                    "Gender CHAR(1)," +
+                    "Email VARCHAR(50)," +
+                    "DateOfBirth DATE," +
+                    "DateOfJoining DATE," +
+                    "Salary DECIMAL(10,2)," +
+                    "`idTHREAD_NULL_EMPLOYEE_RECORDS` INT NOT NULL AUTO_INCREMENT,\n" +
+                    "PRIMARY KEY (`idTHREAD_NULL_EMPLOYEE_RECORDS`)" +
+                    ");";
+            Statement st = connection.createStatement();
+            st.executeUpdate(createTable);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     // table for large file
     public void createThreadTableUniqueEmployee() {
         try {
@@ -128,6 +176,50 @@ public class DatabaseDriver {
         }
     }
 
+    public void populateTableNullEmployee(List<Employee> employeeList) {
+        //for each employee in the list get their details and add it to the database
+        try (PreparedStatement ps = connection.prepareStatement(getInsertNullSQL())) {
+            for (Employee employee : employeeList) {
+                ps.setString(1, employee.getEmployeeID());
+                ps.setString(2, employee.getNamePrefix());
+                ps.setString(3, employee.getFirstName());
+                ps.setString(4, employee.getMiddleInitial().toString());
+                ps.setString(5, employee.getLastName());
+                ps.setString(6, employee.getGender().toString());
+                ps.setString(7, employee.getEmailAddress());
+                ps.setDate(8, employee.getDateOfBirth());
+                ps.setDate(9, employee.getDateOfJoining());
+                ps.setFloat(10, employee.getSalary());
+                ps.executeUpdate();
+            }
+            System.out.println("NULL_EMPLOYEE_RECORDS updated correctly");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void populateThreadTableNullEmployee(List<Employee> employeeList) {
+        //for each employee in the list get their details and add it to the database
+        try (PreparedStatement ps = connection.prepareStatement(getInsertThreadNullSQL())) {
+            for (Employee employee : employeeList) {
+                ps.setString(1, employee.getEmployeeID());
+                ps.setString(2, employee.getNamePrefix());
+                ps.setString(3, employee.getFirstName());
+                ps.setString(4, employee.getMiddleInitial().toString());
+                ps.setString(5, employee.getLastName());
+                ps.setString(6, employee.getGender().toString());
+                ps.setString(7, employee.getEmailAddress());
+                ps.setDate(8, employee.getDateOfBirth());
+                ps.setDate(9, employee.getDateOfJoining());
+                ps.setFloat(10, employee.getSalary());
+                ps.executeUpdate();
+            }
+            System.out.println("THREAD_NULL_EMPLOYEE_RECORDS updated correctly");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     // populate large dup table
     public void populateThreadTableDuplicateEmployee(List<Employee> employeeList) {
         //for each employee in the list get their details and add it to the database
@@ -196,7 +288,7 @@ public class DatabaseDriver {
         }
     }
 
-    public void clearDuplicateTable()    {
+    public void clearDuplicateTable() {
         //drop the table from the database
         String drop = "DROP TABLE IF EXISTS EMPLOYEE_DUP_RECORDS";
         try {
@@ -207,8 +299,29 @@ public class DatabaseDriver {
         }
     }
 
-    // large file
-    public void clearThreadDuplicateTable()    {
+    public void clearNullTable() {
+        //drop the table from the database
+        String drop = "DROP TABLE IF EXISTS NULL_EMPLOYEE_RECORDS";
+        try {
+            Statement st = connection.createStatement();
+            st.executeUpdate(drop);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void clearThreadNullTable() {
+        //drop the table from the database
+        String drop = "DROP TABLE IF EXISTS THREAD_NULL_EMPLOYEE_RECORDS";
+        try {
+            Statement st = connection.createStatement();
+            st.executeUpdate(drop);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void clearThreadDuplicateTable() {
         //drop the table from the database
         String drop = "DROP TABLE IF EXISTS THREAD_EMPLOYEE_DUP_RECORDS";
         try {
@@ -219,7 +332,7 @@ public class DatabaseDriver {
         }
     }
 
-    public void clearUniqueTable()    {
+    public void clearUniqueTable() {
         //drop the table from the database
         String drop = "DROP TABLE IF EXISTS EMPLOYEE_RECORDS";
         try {
@@ -230,8 +343,7 @@ public class DatabaseDriver {
         }
     }
 
-    // large file
-    public void clearThreadUniqueTable()    {
+    public void clearThreadUniqueTable() {
         //drop the table from the database
         String drop = "DROP TABLE IF EXISTS THREAD_EMPLOYEE_RECORDS";
         try {
@@ -240,6 +352,30 @@ public class DatabaseDriver {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    private String getInsertNullSQL() {
+        Properties sqlProps = new Properties();
+        try {
+            sqlProps.load(new FileReader("sql.properties"));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return sqlProps.getProperty("db.sql-insert-null");
+    }
+
+    private String getInsertThreadNullSQL() {
+        Properties sqlProps = new Properties();
+        try {
+            sqlProps.load(new FileReader("sql.properties"));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return sqlProps.getProperty("db.sql-insert-null-thread");
     }
 
     private String getInsertDuplicatesSQL() {
