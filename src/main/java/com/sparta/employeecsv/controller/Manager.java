@@ -137,6 +137,7 @@ public class Manager {
                 dbDriver.clearTable("THREAD_EMPLOYEE_DUP_RECORDS");
                 dbDriver.createThreadTableDuplicatesEmployee();
 
+                // creating threads
                 ThreadManager tm = new ThreadManager();
                 int dupSubListSize = splittedListDuplicateValidValues.size();
                 tm.createDuplicateThreads(dupSubListSize, splittedListDuplicateValidValues);
@@ -151,6 +152,7 @@ public class Manager {
                 dbDriver.clearTable("THREAD_NULL_EMPLOYEE_RECORDS");
                 dbDriver.createThreadTableNullEmployee();
 
+                // creating threads
                 ThreadManager tm = new ThreadManager();
                 int nullSubListSize = splittedListNullValues.size();
                 tm.createNullThreads(nullSubListSize, splittedListNullValues);
@@ -160,6 +162,7 @@ public class Manager {
             dbDriver.clearTable("THREAD_EMPLOYEE_RECORDS");
             dbDriver.createThreadTableUniqueEmployee();
 
+            // creating threads
             ThreadManager tm = new ThreadManager();
             int validSubListSize = splittedListUniqueValidValues.size();
             tm.createUniqueThreads(validSubListSize, splittedListUniqueValidValues);
