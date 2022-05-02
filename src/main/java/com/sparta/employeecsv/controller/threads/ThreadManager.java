@@ -9,6 +9,7 @@ public class ThreadManager {
         Thread tr = null;
 
         try {
+            // long start = System.nanoTime() / 1000000000;
             // takes around 0 seconds
             for(int i = 0; i < lists; i++) {
                 ThreadUniqueValues tm = new ThreadUniqueValues(splittedList.get(i));
@@ -26,6 +27,9 @@ public class ThreadManager {
                             e.printStackTrace();
                         }
                     }); */
+            // long finish = System.nanoTime() / 1000000000;
+            // long duration = finish - start;
+            // System.out.println("createUniqueThreads " + duration);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -42,13 +46,17 @@ public class ThreadManager {
                 Thread tr = new Thread(tm);
                 tr.start();
             } */
-
+            // long start = System.nanoTime() / 1000000000;
+            // takes around 0 seconds
             splittedList.stream()
                     .forEach(list -> {
                         ThreadDuplicateValues tm = new ThreadDuplicateValues(list);
                         Thread tr = new Thread(tm);
                         tr.start();
                     });
+            // long finish = System.nanoTime() / 1000000000;
+            // long duration = finish - start;
+            // System.out.println("createDuplicateThreads " + duration);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -57,19 +65,24 @@ public class ThreadManager {
     public void createNullThreads(// int lists,
                               List<List<Employee>> splittedList) {
         try {
-            /* takes around 0 seconds
+            /*
             for(int i = 0; i < lists; i++) {
                 ThreadNullValues tm = new ThreadNullValues(splittedList.get(i));
                 Thread tr = new Thread(tm);
                 tr.start();
                 tr.join();
             } */
+            // long start = System.nanoTime() / 1000000000;
+            // takes around 0 seconds
             splittedList.stream()
                     .forEach(list -> {
                         ThreadNullValues tm = new ThreadNullValues(list);
                         Thread tr = new Thread(tm);
                         tr.start();
                     });
+            // long finish = System.nanoTime() / 1000000000;
+            // long duration = finish - start;
+            // System.out.println("createNullThreads " + duration);
         } catch (Exception e) {
             e.printStackTrace();
         }
