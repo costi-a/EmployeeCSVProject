@@ -141,7 +141,8 @@ public class DatabaseDriver {
 
     public void populateTableDuplicateEmployee(List<Employee> employeeList) {
         //for each employee in the list get their details and add it to the database
-        try (PreparedStatement ps = connection.prepareStatement(getInsertDuplicatesSQL())) {
+        try (PreparedStatement ps = connection.prepareStatement(
+                insertData("db.sql-insert-duplicates"))) {
             populateData(ps, employeeList);
             System.out.println("EMPLOYEE_DUP_RECORDS updated correctly");
         } catch (SQLException e) {
@@ -151,7 +152,8 @@ public class DatabaseDriver {
 
     public void populateTableNullEmployee(List<Employee> employeeList) {
         //for each employee in the list get their details and add it to the database
-        try (PreparedStatement ps = connection.prepareStatement(getInsertNullSQL())) {
+        try (PreparedStatement ps = connection.prepareStatement(insertData
+                ("db.sql-insert-null"))) {
             populateData(ps, employeeList);
             System.out.println("NULL_EMPLOYEE_RECORDS updated correctly");
         } catch (SQLException e) {
@@ -161,7 +163,8 @@ public class DatabaseDriver {
 
     public void populateThreadTableNullEmployee(List<Employee> employeeList) {
         //for each employee in the list get their details and add it to the database
-        try (PreparedStatement ps = connection.prepareStatement(getInsertThreadNullSQL())) {
+        try (PreparedStatement ps = connection.prepareStatement(
+                insertData("db.sql-insert-null-thread"))) {
             populateData(ps, employeeList);
             System.out.println("THREAD_NULL_EMPLOYEE_RECORDS updated correctly");
         } catch (SQLException e) {
@@ -172,7 +175,8 @@ public class DatabaseDriver {
     // populate large dup table
     public void populateThreadTableDuplicateEmployee(List<Employee> employeeList) {
         //for each employee in the list get their details and add it to the database
-        try (PreparedStatement ps = connection.prepareStatement(getInsertThreadDuplicatesSQL())) {
+        try (PreparedStatement ps = connection.prepareStatement(
+                insertData("db.sql-insert-duplicates-thread"))) {
             populateData(ps, employeeList);
             System.out.println("THREAD_EMPLOYEE_DUP_RECORDS updated correctly");
         } catch (SQLException e) {
@@ -182,7 +186,8 @@ public class DatabaseDriver {
 
     public void populateTableUniqueEmployee(List<Employee> employeeList) {
         //for each employee in the list get their details and add it to the database
-        try (PreparedStatement ps = connection.prepareStatement(getInsertSQL())) {
+        try (PreparedStatement ps = connection.prepareStatement(
+                insertData("db.sql-insert"))) {
             populateData(ps, employeeList);
             System.out.println("EMPLOYEE_RECORDS updated correctly");
         } catch (SQLException e) {
@@ -193,17 +198,18 @@ public class DatabaseDriver {
     // populate large unique table
     public void populateTableMultiList(List<Employee> employeeList) {
         //for each employee in the list get their details and add it to the database
-        try (PreparedStatement ps = connection.prepareStatement(getInsertMultiListSQL())) {
+        try (PreparedStatement ps = connection.prepareStatement(
+                insertData("db.sql-insert-thread"))) {
             populateData(ps, employeeList);
             System.out.println("THREAD_EMPLOYEE_RECORDS updated correctly");
-        } catch (SQLException | IOException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
-    public void clearDuplicateTable() {
+    public void clearTable(String tableName) {
         //drop the table from the database
-        String drop = "DROP TABLE IF EXISTS EMPLOYEE_DUP_RECORDS";
+        String drop = "DROP TABLE IF EXISTS " + tableName;
         try {
             Statement st = connection.createStatement();
             st.executeUpdate(drop);
@@ -212,62 +218,7 @@ public class DatabaseDriver {
         }
     }
 
-    public void clearNullTable() {
-        //drop the table from the database
-        String drop = "DROP TABLE IF EXISTS NULL_EMPLOYEE_RECORDS";
-        try {
-            Statement st = connection.createStatement();
-            st.executeUpdate(drop);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void clearThreadNullTable() {
-        //drop the table from the database
-        String drop = "DROP TABLE IF EXISTS THREAD_NULL_EMPLOYEE_RECORDS";
-        try {
-            Statement st = connection.createStatement();
-            st.executeUpdate(drop);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void clearThreadDuplicateTable() {
-        //drop the table from the database
-        String drop = "DROP TABLE IF EXISTS THREAD_EMPLOYEE_DUP_RECORDS";
-        try {
-            Statement st = connection.createStatement();
-            st.executeUpdate(drop);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void clearUniqueTable() {
-        //drop the table from the database
-        String drop = "DROP TABLE IF EXISTS EMPLOYEE_RECORDS";
-        try {
-            Statement st = connection.createStatement();
-            st.executeUpdate(drop);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void clearThreadUniqueTable() {
-        //drop the table from the database
-        String drop = "DROP TABLE IF EXISTS THREAD_EMPLOYEE_RECORDS";
-        try {
-            Statement st = connection.createStatement();
-            st.executeUpdate(drop);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private String getInsertNullSQL() {
+    public String insertData(String variableName) {
         Properties sqlProps = new Properties();
         try {
             loadPropertiesFile(sqlProps);
@@ -276,66 +227,6 @@ public class DatabaseDriver {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return sqlProps.getProperty("db.sql-insert-null");
-    }
-
-    private String getInsertThreadNullSQL() {
-        Properties sqlProps = new Properties();
-        try {
-            loadPropertiesFile(sqlProps);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return sqlProps.getProperty("db.sql-insert-null-thread");
-    }
-
-    private String getInsertDuplicatesSQL() {
-        Properties sqlProps = new Properties();
-        try {
-            loadPropertiesFile(sqlProps);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return sqlProps.getProperty("db.sql-insert-duplicates");
-    }
-
-    private String getInsertThreadDuplicatesSQL() {
-        Properties sqlProps = new Properties();
-        try {
-            loadPropertiesFile(sqlProps);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return sqlProps.getProperty("db.sql-insert-duplicates-thread");
-    }
-
-    private String getInsertSQL() {
-        //get the sql insert property from the properties file
-        Properties sqlProps = new Properties();
-        try {
-            loadPropertiesFile(sqlProps);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return sqlProps.getProperty("db.sql-insert");
-    }
-
-    private String getInsertMultiListSQL() throws IOException {
-        //get the sql insert property from the properties file
-        Properties sqlProps = new Properties();
-        try {
-            loadPropertiesFile(sqlProps);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        return sqlProps.getProperty("db.sql-insert-thread");
+        return sqlProps.getProperty(variableName);
     }
 }

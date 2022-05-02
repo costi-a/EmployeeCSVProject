@@ -2,9 +2,9 @@ package com.sparta.employeecsv.controller;
 import com.sparta.employeecsv.database.DatabaseDriver;
 import com.sparta.employeecsv.display.DisplayInfo;
 import com.sparta.employeecsv.model.Employee;
-import com.sparta.employeecsv.controller.threads.ThreadManagerDuplicateValues;
-import com.sparta.employeecsv.controller.threads.ThreadManagerNullValues;
-import com.sparta.employeecsv.controller.threads.ThreadManagerUniqueValues;
+import com.sparta.employeecsv.controller.threads.ThreadDuplicateValues;
+import com.sparta.employeecsv.controller.threads.ThreadNullValues;
+import com.sparta.employeecsv.controller.threads.ThreadUniqueValues;
 
 import java.io.BufferedReader;
 import java.util.LinkedList;
@@ -59,7 +59,7 @@ public class Manager {
             LinkedList<Employee> uniqueEmployees = uniqueValues.returnUniqueEmployees(
                     employeesValidValues, mapIds);
 
-            // dInfo.printResults(duplicateIdsInt, uniqueIds, uniqueEmployees, nullValues);
+            dInfo.printResults(duplicateIdsInt, uniqueIds, uniqueEmployees, nullValues);
 
             // dropping and creating table
             DatabaseDriver dbDriver = new DatabaseDriver();
@@ -69,7 +69,7 @@ public class Manager {
             long startTimeSeconds = ct.calculateStartTime();
 
             // dropping, creating table unique employee
-            dbDriver.clearUniqueTable();
+            dbDriver.clearTable("EMPLOYEE_RECORDS");
             dbDriver.createTableUniqueEmployee();
 
             // populating the table with unique ids employees
@@ -77,7 +77,7 @@ public class Manager {
 
             if(duplicatesEmployees.size() > 0) {
                 // dropping, creating table duplicate employee
-                dbDriver.clearDuplicateTable();
+                dbDriver.clearTable("EMPLOYEE_DUP_RECORDS");
                 dbDriver.createTableDuplicatesEmployee();
 
                 // populating the table with duplicate ids employees
@@ -86,7 +86,7 @@ public class Manager {
 
             if(employeesNullValues.size() > 0) {
                 // dropping, creating table null employee
-                dbDriver.clearNullTable();
+                dbDriver.clearTable("NULL_EMPLOYEE_RECORDS");
                 dbDriver.createTableNullEmployee();
 
                 // populating the table with null values employees
@@ -148,12 +148,12 @@ public class Manager {
                 splittedListDuplicateValidValues = sp.splitList(60, duplicatesEmployees);
 
                 // dropping, creating table duplicate employee tables
-                dbDriver.clearThreadDuplicateTable();
+                dbDriver.clearTable("THREAD_EMPLOYEE_DUP_RECORDS");
                 dbDriver.createThreadTableDuplicatesEmployee();
 
-                ThreadManagerDuplicateValues tm7 = new ThreadManagerDuplicateValues
+                ThreadDuplicateValues tm7 = new ThreadDuplicateValues
                         (splittedListDuplicateValidValues.get(0));
-                ThreadManagerDuplicateValues tm8 = new ThreadManagerDuplicateValues
+                ThreadDuplicateValues tm8 = new ThreadDuplicateValues
                         (splittedListDuplicateValidValues.get(1));
                 // ThreadManagerDuplicateValues tm9 = new ThreadManagerDuplicateValues
                 //      (splittedListDuplicateValidValues.get(2));
@@ -186,12 +186,12 @@ public class Manager {
                         sp.splitList(500, employeesNullValues);
 
                 // dropping, creating table null employee tables
-                dbDriver.clearThreadNullTable();
+                dbDriver.clearTable("THREAD_NULL_EMPLOYEE_RECORDS");
                 dbDriver.createThreadTableNullEmployee();
 
-                ThreadManagerNullValues tm13 = new ThreadManagerNullValues
+                ThreadNullValues tm13 = new ThreadNullValues
                         (splittedListNullValidValues.get(0));
-                ThreadManagerNullValues tm14 = new ThreadManagerNullValues
+                ThreadNullValues tm14 = new ThreadNullValues
                         (splittedListNullValidValues.get(1));
                 // ThreadManagerNullValues tm15 = new ThreadManagerNullValues
                         // (splittedListNullValidValues.get(2));
@@ -219,9 +219,9 @@ public class Manager {
             }
 
             // creating thread manager unique values
-            ThreadManagerUniqueValues tm1 = new ThreadManagerUniqueValues
+            ThreadUniqueValues tm1 = new ThreadUniqueValues
                     (splittedListUniqueValidValues.get(0));
-            ThreadManagerUniqueValues tm2 = new ThreadManagerUniqueValues
+            ThreadUniqueValues tm2 = new ThreadUniqueValues
                     (splittedListUniqueValidValues.get(1));
             // ThreadManagerUniqueValues tm3 = new ThreadManagerUniqueValues
                     // (splittedListUniqueValidValues.get(2));
@@ -241,7 +241,7 @@ public class Manager {
             // Thread thread6 = new Thread(tm6);
 
             // dropping, creating table unique employee tables
-            dbDriver.clearThreadUniqueTable();
+            dbDriver.clearTable("THREAD_EMPLOYEE_RECORDS");
             dbDriver.createThreadTableUniqueEmployee();
 
             // starting threads

@@ -5,10 +5,10 @@ import com.sparta.employeecsv.model.Employee;
 
 import java.util.List;
 
-public class ThreadManagerNullValues implements Runnable {
+public class ThreadNullValues implements Runnable {
     private List<Employee> listSplitted;
 
-    public ThreadManagerNullValues(List<Employee> listSplitted) {
+    public ThreadNullValues(List<Employee> listSplitted) {
         this.listSplitted = listSplitted;
     }
 
