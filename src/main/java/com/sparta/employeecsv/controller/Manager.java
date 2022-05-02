@@ -139,8 +139,7 @@ public class Manager {
 
                 // creating threads
                 ThreadManager tm = new ThreadManager();
-                int dupSubListSize = splittedListDuplicateValidValues.size();
-                tm.createDuplicateThreads(dupSubListSize, splittedListDuplicateValidValues);
+                tm.createDuplicateThreads(splittedListDuplicateValidValues);
             }
 
             if(employeesNullValues.size() > 0) {
@@ -154,8 +153,7 @@ public class Manager {
 
                 // creating threads
                 ThreadManager tm = new ThreadManager();
-                int nullSubListSize = splittedListNullValues.size();
-                tm.createNullThreads(nullSubListSize, splittedListNullValues);
+                tm.createNullThreads(splittedListNullValues);
             }
 
             // dropping, creating table unique employee tables
@@ -164,8 +162,12 @@ public class Manager {
 
             // creating threads
             ThreadManager tm = new ThreadManager();
-            int validSubListSize = splittedListUniqueValidValues.size();
-            tm.createUniqueThreads(validSubListSize, splittedListUniqueValidValues);
+            int sublistsValidValueSize = splittedListUniqueValidValues.size();
+            Thread uniqueThread = tm.createUniqueThreads(
+                    sublistsValidValueSize, splittedListUniqueValidValues);
+
+            // waiting for thread to finish
+            uniqueThread.join();
 
             long durationThreads = ct.calculateEndTime(startTimeThreads);
 

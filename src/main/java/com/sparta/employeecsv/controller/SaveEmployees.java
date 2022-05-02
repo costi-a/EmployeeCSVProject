@@ -65,6 +65,7 @@ public class SaveEmployees {
         System.out.println("updating List<Employee> employeesNullList...");
 
         try {
+            /*
             for(int i = 0; i < employeesList.size(); i++) {
                 Employee employee = employeesList.get(i);
 
@@ -72,7 +73,15 @@ public class SaveEmployees {
                 if(invalidData) {
                     employeesNullList.add(employee);
                 }
-            }
+            } */
+
+            employeesList.stream()
+                    .forEach(employee -> {
+                        boolean invalidData = invalidData(employee);
+                        if(invalidData) {
+                            employeesNullList.add(employee);
+                        }
+                    });
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -84,7 +93,7 @@ public class SaveEmployees {
         LinkedList<Employee> employeesValidList = new LinkedList<>();
         System.out.println("updating LinkedList<Employee> employeesValidList...");
 
-        try {
+        try { /*
             for(int i = 0; i < employeesList.size(); i++) {
                 Employee employee = employeesList.get(i);
 
@@ -92,7 +101,15 @@ public class SaveEmployees {
                 if(!invalidData) {
                     employeesValidList.add(employee);
                 }
-            }
+            } */
+
+            employeesList.stream()
+                    .forEach(employee -> {
+                        boolean invalidData = invalidData(employee);
+                        if(!invalidData) {
+                            employeesValidList.add(employee);
+                        }
+                    });
         } catch (Exception e) {
             e.printStackTrace();
         }
