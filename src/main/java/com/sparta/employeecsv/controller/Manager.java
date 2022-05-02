@@ -103,7 +103,7 @@ public class Manager {
             EmployeeDAO eDAO = new EmployeeDAO();
             Employee employee = eDAO.getEmployeeByID("198429");
             System.out.println("getEmployeeById " + employee);
-            eDAO.deleteEmployeeById("111282");
+            System.out.println("employee deleted: " + eDAO.deleteEmployeeById("111282"));;
 
             // stopping the program for 5 seconds in order to let the user read the info
             TimeUnit.SECONDS.sleep(5);
